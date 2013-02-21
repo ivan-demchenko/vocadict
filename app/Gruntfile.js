@@ -7,6 +7,17 @@ module.exports = function (grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    stylus: {
+      compile: {
+        options: {
+          paths: ['src/css/src']
+        },
+        files: {
+          'app.css': ['src/css/src/*.styl'] // compile and concat into single file
+        }
+      }
+    },
+
     cssmin: {
       compress: {
         files: {
@@ -46,8 +57,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  grunt.registerTask('default', ['cssmin', 'requirejs', 'uglify', 'jshint']);
+  grunt.registerTask('default', ['stylus', 'cssmin', 'requirejs', 'uglify', 'jshint']);
 
 };
