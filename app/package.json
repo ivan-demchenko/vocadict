@@ -10,11 +10,16 @@
   },
   "main": "build/server",
   "engines": {
-    "node": "~0.6.11"
+    "node": "~0.8.20l"
   },
   "dependencies": {
-    "express": "~2.5.8"
+    "express": "~3.0.0"
   },
-  "devDependencies": {},
-  "optionalDependencies": {}
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-contrib-cssmin": "~0.4.1",
+    "grunt-contrib-requirejs": "~0.4.0"
+  }
 }
