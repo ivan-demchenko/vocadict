@@ -35,7 +35,7 @@ define([
         $(this.el).append(itemHTML);
       },
       setMeActive: function setMeActive() {
-        $(this.el).toggleClass('active', this.model.get('isActive'));
+        //$(this.el).toggleClass('active', this.model.get('isActive'));
       }
     });
 

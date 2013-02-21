@@ -50,11 +50,7 @@ define([
           e.stopPropagation();
 
           app.trigger('track.search', {
-            type: 'vk',
-            deleteable: false,
-            method: 'audio.search',
-            listTitle: 'Variant of "' + this.model.getTrackCreds() + '"',
-            $domElement: $("#search-mp3-list"),
+            type: 'search',
             artist: app.methods.decodeStr(this.model.get('artist').name),
             title: app.methods.decodeStr(this.model.get('name'))
           });
