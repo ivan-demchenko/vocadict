@@ -1,25 +1,26 @@
-/**
- * APP
-    **/
-
+/** APP
+ **/
 define([
-// Libs
-'jquery',
-'underscore',
-'backbone'
+  // Libs
+  'jquery',
+  'underscore',
+  'backbone',
+
+  // Deps
+  'app'
 ],
-function($, _, BB){
+  function ($, _, BB, app) {
 
     // Autoplay animation when data is been loading
     $.ajaxSetup({
-        beforeSend: function(){
-            app.methods.messages.show('blue', 'Loading data...');
-        },
-        complete: function() {
-            app.methods.messages.hide();
-        }
+      beforeSend: function () {
+        app.methods.messages.show('blue', 'Loading data...');
+      },
+      complete: function () {
+        app.methods.messages.hide();
+      }
     });
-    
+
     // Setups, methods, keys, etc...
     window.app = {
         debug: true,

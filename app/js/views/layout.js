@@ -1,34 +1,32 @@
 define([
-// Libs
-'jquery',
-'underscore',
-'backbone',
+  // Libs
+  'jquery',
+  'underscore',
+  'backbone',
 
-// Deps
-'app',
+  // Deps
+  'app',
 
-// Child view
-'views/search/form',
+  // Child view
+  'views/search/form',
 
-// Templates
-'text!templates/layout.html'
+  // Templates
+  'text!templates/layout.html'
 ],
-function($, _, Backbone, app, searchForm, template){
+  function ($, _, Backbone, app, SearchForm, template) {
 
     var View = Backbone.View.extend({
 
-        el: $('body'),
+      el: $('body'),
 
-        render: function() {
-            this.$el.html(template);
-            
-            app.views.searchForm = new searchForm();
-            app.views.searchForm.render();
-
-            this.$el.find('#app-header').append(app.views.searchForm.el);
-        }
+      render: function () {
+        this.$el.html(template);
+        app.views.searchForm = new SearchForm();
+        app.views.searchForm.render();
+        this.$el.find('#app-header').append(app.views.searchForm.el);
+      }
 
     });
 
     return View;
-});
+  });

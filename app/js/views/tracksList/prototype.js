@@ -2,24 +2,25 @@
  *  It suppose that it will do some general thigs
  **/
 define([
-// Libs
-'underscore',
-'backbone'
+  // Libs
+  'underscore',
+  'backbone'
 ],
-function(_, Backbone){
+  function (_, Backbone) {
 
     var View = Backbone.View.extend({
-    
-        collection: undefined,
 
-        className: 'tracks-list',
+      collection: undefined,
 
-        initialize: function initialize(params) {
-            this.$el.attr('id', this.cid);
-            this.$el.html(this.template( { listTitle: params.data.listTitle } ));
-            return this;
-        }
+      className: 'tracks-list',
+
+      initialize: function initialize(params) {
+        this.$el.attr('id', this.cid);
+        this.$el.html(this.template({ listTitle: params.data.listTitle }));
+        return this;
+      }
+
     });
 
     return View;
-});
+  });
