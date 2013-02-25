@@ -6,8 +6,7 @@ define([
   'underscore',
   'backbone'
 ],
-  function ($, _, BB) {
-
+  function ($, _, backbone) {
     var app = {};
 
     // Autoplay animation when data is been loading
@@ -35,11 +34,11 @@ define([
       lastfm: {
         url: 'http://ws.audioscrobbler.com/2.0/',
         api_key: 'c1c6fd197f66044294bd73a350345a6d',
-        secret: '825bc2441bbbdaf88f29e8d4fce8552f'
+        secret: '825bc2441backbonebdaf88f29e8d4fce8552f'
       },
       log: function () {
         if (app.debug && typeof window.console !== 'undefiend') {
-          window.console.log.apply(this, arguments);
+          window.console.log.apply(console, arguments);
         }
       },
       views: {},
@@ -109,7 +108,7 @@ define([
           if (app.playerObject === null) {
             app.playerObject = document.getElementById("mp3-player");
           }
-          if (data.url === undefined) {
+          if (data.url !== undefined) {
             $("#player small span").text(data.title);
             app.playerObject.SetVariable("player:jsStop", "");
             app.playerObject.SetVariable("player:jsUrl", data.url);
@@ -189,7 +188,7 @@ define([
                 api_key: app.lastfm.api_key
               },
               success: function (collection, response) {
-                if (response.similartracks === undefined) {
+                if (response.similartracks !== undefined) {
                   if (response.similartracks['#text'] === undefined) {
                     app.trigger('list.loaded', {data: params, collection: collection});
                   } else {
@@ -211,9 +210,11 @@ define([
           switch (params.type) {
           case "my":
           case "vk":
+            app.log('loading vk list');
             app.methods.loadVkTracklist(params);
             break;
           case "lastfm":
+            app.log('loading lastfm list');
             app.methods.loadSimilarTrackList(params);
             break;
           }
@@ -246,7 +247,7 @@ define([
       }
     };
 
-    app = _.extend(app, BB.Events);
+    app = _.extend(app, backbone.Events);
     window.app = app;
     return app;
   });

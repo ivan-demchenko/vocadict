@@ -3,25 +3,33 @@
 **/
 
 define([
-// Deps
-'backbone'
+  // Libs
+  'underscore',
+  'backbone'
 ],
-function(Backbone){
+  function (_, Backbone) {
+
     var Model = Backbone.Model.extend({
-        defaults: {
-            "name": "Unknown",
-            "artist": {
-                "name": "Unknown",
-                "url": "http://www.google.com"
-            },
-            "isActive": false
+
+      defaults: {
+        "name": "Unknown",
+        "artist": {
+          "name": "Unknown",
+          "url": "http://www.google.com"
         },
-        getSimilarUrl: function() {
-            return 'similar/' + this.get('artist').name + '/' + this.get('name');
-        },
-        getTrackCreds: function() {
-            return this.get('artist').name + ' - ' + this.get('name');
-        }
+        "isActive": false
+      },
+
+      getSimilarUrl: function () {
+        return 'similar/' + this.get('artist').name + '/' + this.get('name');
+      },
+
+      getTrackCreds: function () {
+        return this.get('artist').name + ' - ' + this.get('name');
+      }
+
     });
+
     return Model;
-});
+
+  });

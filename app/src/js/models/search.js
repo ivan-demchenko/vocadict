@@ -1,21 +1,17 @@
 define([
-// Deps
-'app',
-'jquery',
-'underscore',
-'backbone'
+  // Deps
+  'app',
+  'jquery',
+  'underscore',
+  'backbone'
 ],
-function(app, $, _, Backbone, html){
+  function (app, $, _, Backbone, html) {
 
     var Model = Backbone.Model.extend({
-        defaults: {
-            entryContent: ''
-        },
-
-        initialize: function() {
-
-        }
+      defaults: {
+        entryContent: ''
+      }
     });
 
     return Model;
-});
+  });

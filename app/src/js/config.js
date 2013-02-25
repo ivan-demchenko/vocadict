@@ -1,12 +1,12 @@
 require.config({
 
-  baseUrl: '/src/js/',
+  baseUrl: '/src/js',
 
   paths: {
     text: 'libs/require/text',
-    jquery: 'libs/jquery/jquery-190-min',
-    underscore: 'libs/underscore/underscore-min',
-    backbone: 'libs/backbone/backbone-min',
+    jquery: 'libs/jquery/jquery-1.9.1',
+    underscore: 'libs/lodash/lodash',
+    backbone: 'libs/backbone/backbone-optamd3-min',
     app: 'app'
   },
 

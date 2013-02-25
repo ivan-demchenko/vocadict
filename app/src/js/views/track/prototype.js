@@ -22,7 +22,8 @@ define([
       },
       events: {
         'click': 'selectMe',
-        'click button': 'playTrack'
+        'click .icon-play': 'playTrack',
+        'click .icon-search': 'playTrack'
       },
       selectMe: function selectMe(e) {
         app.log('track clicked');

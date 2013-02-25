@@ -73,11 +73,14 @@ button {
   font-size: 11px;
   position: relative;
 }
-.track-line {
-  padding: 5px;
+.tracks-list .track-line {
+  border-bottom: solid 1px #ccc;
+}
+.tracks-list .track-line button {
+  width: 30px;
 }
 .tracks-list .tracks-list {
-  margin-left: 40px;
+  margin-left: 30px;
 }
 .tracks-list header {
   background: #cb252a;
@@ -91,17 +94,16 @@ button {
   display: block;
   font-style: normal;
   position: absolute;
-  top: 2px;
-  right: 0;
+  top: 4px;
+  right: 4px;
 }
-.tracks-list .sub-track .tracks-list,
 .tracks-list div .item {
   cursor: pointer;
 }
-.tracks-list div .item.active {
+.tracks-list div.active {
   border-bottom: solid 2px #cb252a;
 }
-.tracks-list div .item.active>.track-line {
+.tracks-list div.active>.track-line {
   border-bottom: solid 1px #cb252a;
   background: #cbd49c;
 }
@@ -153,4 +155,8 @@ button {
 }
 #logo {
   color: #444;
+}
+button:hover {
+  border: solid 1px #309dcf;
+  background: #309dcf;
 }

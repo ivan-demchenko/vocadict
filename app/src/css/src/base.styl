@@ -58,8 +58,8 @@ button
 #search-box
   padding 6px 10px 0 0
 
-#search-box input
-  padding 5px
+  input
+    padding 5px
 
 #track-lists-wrapper
   width 70%
@@ -70,47 +70,49 @@ button
 .tracks-list
   font-size 11px
   position relative
+  
+  .track-line
+    border-bottom solid 1px #ccc
+    
+    button
+      width 30px
 
-.track-line
-  padding 5px
+  .tracks-list
+    margin-left 30px
 
-.tracks-list .tracks-list
-  margin-left 40px
+  header
+    background #CB252A
+    color #fff
+    font-size 15px
+    padding 2px 5px
+    position relative
 
-.tracks-list header
-  background #CB252A
-  color #fff
-  font-size 15px
-  padding 2px 5px
-  position relative
+    .icon-remove
+      cursor pointer
+      display block
+      font-style normal
+      position absolute
+      top 4px
+      right 4px
 
-.tracks-list header .icon-remove
-  cursor pointer
-  display block
-  font-style normal
-  position absolute
-  top 2px
-  right 0
+  div
+    .item
+      cursor pointer
 
-.tracks-list .sub-track .tracks-list
+    &.active
+      border-bottom solid 2px #CB252A
 
-.tracks-list div .item
-  cursor pointer
+    &.active>.track-line
+      border-bottom solid 1px #CB252A
+      background #CBD49C
 
-.tracks-list div .item.active
-  border-bottom solid 2px #CB252A
+    .hovered
+      background #D9B343
 
-.tracks-list div .item.active>.track-line
-  border-bottom solid 1px #CB252A
-  background #CBD49C
-
-.tracks-list div .hovered
-  background #D9B343
-
-.tracks-list div .hovered button
-  background #fff
-  border solid 1px #fff
-  color #D9B343
+      button
+        background #fff
+        border solid 1px #fff
+        color #D9B343
 
 #search-mp3-list
   bottom 0
