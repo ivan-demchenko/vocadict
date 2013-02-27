@@ -1,7 +1,4 @@
-/**
- * PROTOTYPE OF TRACK VIEW
-**/
-
+/** PROTOTYPE OF TRACK VIEW **/
 define([
   // Deps
   'app',
@@ -13,9 +10,7 @@ define([
 
     var View = Backbone.View.extend({
       tagName: 'section',
-
       className: 'item',
-
       initialize: function (params) {
         _.bindAll(this, 'setMeActive', 'selectMe', 'render', 'playTrack');
         this.model.on('change:isActive', this.setMeActive);

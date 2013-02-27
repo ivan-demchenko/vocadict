@@ -69,6 +69,7 @@ define([
 
           app.on('track.search', this.searchTrack);
           app.on('track.play', this.playTrack);
+          app.on('track.save', this.saveTrack);
 
           // Initial load user's track list from VK
           app.trigger('list.load', {type: 'my'});
@@ -83,6 +84,9 @@ define([
         messages: {
           timer: undefined,
           show: function (type, text) {
+            if (app.methods.messages.timer !== undefined) {
+              clearTimeout(app.methods.messages.timer);
+            }
             $("#messages")
               .html(text)
               .attr('class', 'msg ' + type)
@@ -105,6 +109,7 @@ define([
 
         playTrack: function playTrack(data) {
           app.log('app: playTrack: ', data);
+
           if (app.playerObject === null) {
             app.playerObject = document.getElementById("mp3-player");
           }
@@ -116,11 +121,36 @@ define([
           }
         },
 
+        saveTrack: function saveTrack(data) {
+          app.log('app: saveTrack: ', data);
+
+          $.ajax(app.vk.baseurl + 'audio.add', {
+            type: 'get',
+            crossDomain: true,
+            dataType: 'jsonp',
+            cache: true,
+            data: {
+              access_token: app.vk.access_token,
+              uid: app.vk.user_id,
+              aid: data.get('aid'),
+              oid: data.get('oid') || data.get('owner_id')
+            },
+            success: function (response) {
+              if( typeof response.response === 'number' ) {
+                app.methods.messages.auto('blue', 'Track has been added to your track list.');
+              } else {
+                app.methods.messages.auto('red', 'Error.');
+              }
+            }
+          });
+        },
+
         searchTrack: function searchTrack(params) {
           app.log('app: searchTrack: ', params);
 
           params.$domElement = $("#search-mp3-list");
           params.listTitle = 'Variants of "' + params.artist + " - " + params.title + '"';
+          params.type = 'search';
 
           require(['app', 'collections/vkSongs'], function (app, SongsCollection) {
             var vkSongs = new SongsCollection({ method: params.method });
@@ -128,7 +158,7 @@ define([
               type: 'get',
               crossDomain: true,
               dataType: 'jsonp',
-              cache: false,
+              cache: true,
               data: {
                 access_token: app.vk.access_token,
                 uid: app.vk.user_id,
@@ -166,7 +196,7 @@ define([
               },
               success: function (collection, response) {
                 if (response.error) {
-                  app.messages.auto(response.error.error_msg);
+                  app.methods.messages.auto(response.error.error_msg);
                 }
                 app.trigger('list.loaded', {data: params, collection: collection});
               }

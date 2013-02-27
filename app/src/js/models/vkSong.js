@@ -15,6 +15,9 @@ define([
         "artist": "Unknown",
         "title": "Untitled",
         "url": "none",
+        "aid": undefined,
+        "oid": undefined,
+        "owner_id": undefined,
         "isActive": false,
         "lyrics_id": undefined
       },

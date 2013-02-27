@@ -24,7 +24,7 @@ button {
   font-weight: bold;
   padding: 10px 15px;
 }
-#logohover {
+#logo:hover {
   text-shadow: 0 0 3px #999;
   text-decoration: none;
 }
@@ -75,6 +75,11 @@ button {
 }
 .tracks-list .track-line {
   border-bottom: solid 1px #ccc;
+}
+.tracks-list .track-line article {
+  display: inline-block;
+  width: 369px;
+  vertical-align: top;
 }
 .tracks-list .track-line button {
   width: 30px;

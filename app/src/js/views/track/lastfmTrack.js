@@ -33,7 +33,6 @@ define([
 
           TrackViewPrototype.prototype.selectMe.apply(this, arguments);
           app.trigger('list.load', {
-            deleteable: true,
             $domElement: $(e.currentTarget).find('.sub-track'),
             artist: app.methods.decodeStr(this.model.get('artist').name),
             title: app.methods.decodeStr(this.model.get('name')),

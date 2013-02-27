@@ -11,7 +11,7 @@ define([
   // Deps
   'app',
   'views/tracksList/prototype',
-  'views/track/vkTrack', // VKontakte track view
+  'views/track/searchTrack', // VKontakte track view
 
   // Template
   'text!templates/tracksList/myTracksList.html'
@@ -31,6 +31,9 @@ define([
           app.log('searchTracksList: render: this', this);
 
           var docFrag = document.createDocumentFragment();
+
+          app.log(this.collection);
+
           this.collection.each(function (TrackModel) {
             if (TrackModel.get('artist') !== 'Unknown') {
               var view = new TrackView({ model: TrackModel });
