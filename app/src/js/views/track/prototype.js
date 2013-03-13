@@ -17,26 +17,14 @@ define([
       className: 'item',
 
       initialize: function (params) {
-        _.bindAll(this, 'setMeActive', 'selectMe', 'render', 'playTrack');
-        this.model.on('change:isActive', this.setMeActive);
+        _.bindAll(this, 'selectMe', 'render');
       },
-      events: {
-        'click': 'selectMe',
-        'click button': 'playTrack'
-      },
-      selectMe: function selectMe(e) {
-        app.log('track clicked');
 
-        this.el = e.currentTarget;
-        this.model.set('isActive', true);
-      },
       render: function render() {
         var itemHTML = _.template(this.template, this.model.toJSON());
         $(this.el).append(itemHTML);
-      },
-      setMeActive: function setMeActive() {
-        //$(this.el).toggleClass('active', this.model.get('isActive'));
       }
+
     });
 
     return View;

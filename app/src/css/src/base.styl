@@ -22,18 +22,17 @@ button
   font-weight bold
   padding 10px 15px
 
-#logohover
+#logo:hover
   text-shadow 0 0 3px #999
   text-decoration none
 
 #player
-  border-left 1px solid #78A68F
   padding 0 10px
   float left
   line-height 1
 
-#player object#mp3-player
-  margin-top 7px
+  #mp3-player
+    margin-top 7px
 
 .msg
   padding 0
@@ -42,24 +41,27 @@ button
   position fixed
   top 40px
   z-index 2
-  -webkit-transition .3s
-  -moz-transition .3s
-  -o-transition .3s
-  transition .3s
+  multiprop(transition, .3s)
   box-shadow 0 0 5px #444
 
-.msg.visible
-  opacity 1
-  padding 5px 10px
+  .visible
+    opacity 1
+    padding 5px 10px
 
-.msg.red
-  border-bottom solid 1px red
+  .red
+    border-bottom solid 1px red
 
 #search-box
   padding 6px 10px 0 0
 
-#search-box input
-  padding 5px
+  input
+    padding 5px
+
+#search-mp3-list
+  bottom 0
+  right 0
+  width 30%
+  top 40px
 
 #track-lists-wrapper
   width 70%
@@ -71,50 +73,23 @@ button
   font-size 11px
   position relative
 
-.track-line
-  padding 5px
+  header
+    background #CB252A
+    color #fff
+    font-size 15px
+    padding 2px 5px
+    position relative
 
-.tracks-list .tracks-list
-  margin-left 40px
+    .icon-remove
+      cursor pointer
+      display block
+      font-style normal
+      position absolute
+      top 4px
+      right 4px
 
-.tracks-list header
-  background #CB252A
-  color #fff
-  font-size 15px
-  padding 2px 5px
-  position relative
+  .item
+    border-bottom solid 1px #ccc
 
-.tracks-list header .icon-remove
-  cursor pointer
-  display block
-  font-style normal
-  position absolute
-  top 2px
-  right 0
-
-.tracks-list .sub-track .tracks-list
-
-.tracks-list div .item
-  cursor pointer
-
-.tracks-list div .item.active
-  border-bottom solid 2px #CB252A
-
-.tracks-list div .item.active>.track-line
-  border-bottom solid 1px #CB252A
-  background #CBD49C
-
-.tracks-list div .hovered
-  background #D9B343
-
-.tracks-list div .hovered button
-  background #fff
-  border solid 1px #fff
-  color #D9B343
-
-#search-mp3-list
-  bottom 0
-  right 0
-  width 30%
-  top 40px
-
+    .sub-track
+      padding-left 30px

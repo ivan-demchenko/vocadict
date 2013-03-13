@@ -24,17 +24,16 @@ button {
   font-weight: bold;
   padding: 10px 15px;
 }
-#logohover {
+#logo:hover {
   text-shadow: 0 0 3px #999;
   text-decoration: none;
 }
 #player {
-  border-left: 1px solid #78a68f;
   padding: 0 10px;
   float: left;
   line-height: 1;
 }
-#player object#mp3-player {
+#player #mp3-player {
   margin-top: 7px;
 }
 .msg {
@@ -46,15 +45,16 @@ button {
   z-index: 2;
   -webkit-transition: 0.3s;
   -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s;
   box-shadow: 0 0 5px #444;
 }
-.msg.visible {
+.msg .visible {
   opacity: 1;
   padding: 5px 10px;
 }
-.msg.red {
+.msg .red {
   border-bottom: solid 1px #f00;
 }
 #search-box {
@@ -62,6 +62,12 @@ button {
 }
 #search-box input {
   padding: 5px;
+}
+#search-mp3-list {
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  top: 40px;
 }
 #track-lists-wrapper {
   width: 70%;
@@ -72,12 +78,6 @@ button {
 .tracks-list {
   font-size: 11px;
   position: relative;
-}
-.track-line {
-  padding: 5px;
-}
-.tracks-list .tracks-list {
-  margin-left: 40px;
 }
 .tracks-list header {
   background: #cb252a;
@@ -91,33 +91,14 @@ button {
   display: block;
   font-style: normal;
   position: absolute;
-  top: 2px;
-  right: 0;
+  top: 4px;
+  right: 4px;
 }
-.tracks-list .sub-track .tracks-list,
-.tracks-list div .item {
-  cursor: pointer;
+.tracks-list .item {
+  border-bottom: solid 1px #ccc;
 }
-.tracks-list div .item.active {
-  border-bottom: solid 2px #cb252a;
-}
-.tracks-list div .item.active>.track-line {
-  border-bottom: solid 1px #cb252a;
-  background: #cbd49c;
-}
-.tracks-list div .hovered {
-  background: #d9b343;
-}
-.tracks-list div .hovered button {
-  background: #fff;
-  border: solid 1px #fff;
-  color: #d9b343;
-}
-#search-mp3-list {
-  bottom: 0;
-  right: 0;
-  width: 30%;
-  top: 40px;
+.tracks-list .item .sub-track {
+  padding-left: 30px;
 }
 .silver-step-gradient {
   background: #fafafa;
@@ -153,4 +134,7 @@ button {
 }
 #logo {
   color: #444;
+}
+button {
+  width: 30px;
 }

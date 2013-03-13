@@ -10,52 +10,60 @@ define([
 
   // Deps
   'app',
-  'views/track/prototype',
 
   // Template
   'text!templates/track/lastfmTrack.html'
 ],
-  function ($, _, Backbone, app, TrackViewPrototype, html) {
+  function ($, _, Backbone, app, html) {
+    var View = Backbone.View.extend({
+      tagName: 'section',
+      className: 'item',
 
-    var View = TrackViewPrototype.extend({
-        initialize: function () {
-          this.template = html;
-          TrackViewPrototype.prototype.initialize.apply(this, arguments);
-        },
-        /**
-         * Cliked on track's tag.
-         **/
-        selectMe: function selectMe(e) {
-          app.log('lastfmTrack clicked');
+      initialize: function () {
+        this.template = html;
+        _.bindAll(this, 'selectMe', 'searchTrack', 'render');
+      },
 
-          e.preventDefault();
-          e.stopPropagation();
+      events: {
+        'click': 'selectMe',
+        'click .icon-search': 'searchTrack'
+      },
 
-          TrackViewPrototype.prototype.selectMe.apply(this, arguments);
-          app.trigger('list.load', {
-            deleteable: true,
-            $domElement: $(e.currentTarget).find('.sub-track'),
-            artist: app.methods.decodeStr(this.model.get('artist').name),
-            title: app.methods.decodeStr(this.model.get('name')),
-            listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
-          });
-        },
-        /**
-         * Button Play clicked.
-         **/
-        playTrack: function playTrack(e) {
-          app.log('lastfmTrack: playTrack: model: ', this.model);
+      selectMe: function selectMe(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-          e.preventDefault();
-          e.stopPropagation();
+        app.log('lastfmTrack clicked');
 
-          app.trigger('track.search', {
-            type: 'search',
-            artist: app.methods.decodeStr(this.model.get('artist').name),
-            title: app.methods.decodeStr(this.model.get('name'))
-          });
-        }
-      });
+        this.el = e.currentTarget;
+        this.model.set('isActive', true);
+
+        app.trigger('list.load', {
+          artist: app.methods.decodeStr(this.model.get('artist').name),
+          title: app.methods.decodeStr(this.model.get('name')),
+          listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"',
+          $domElement: $(e.currentTarget).find('.sub-track')
+        });
+      },
+
+      searchTrack: function playTrack(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        app.log('lastfmTrack: searchTrack: model: ', this.model);
+
+        app.trigger('track.search', {
+          type: 'search',
+          artist: app.methods.decodeStr(this.model.get('artist').name),
+          title: app.methods.decodeStr(this.model.get('name'))
+        });
+      },
+
+      render: function render() {
+        var itemHTML = _.template(this.template, this.model.toJSON());
+        $(this.el).append(itemHTML);
+      }
+    });
 
     return View;
   });

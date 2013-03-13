@@ -53,7 +53,7 @@ define([
         },
 
         /**
-         * 
+         *
          **/
         start: function start() {
           if (!app.vk.user_id || !app.vk.access_token) {
@@ -70,6 +70,7 @@ define([
 
           app.on('track.search', this.searchTrack);
           app.on('track.play', this.playTrack);
+          app.on('track.like', this.likeTrack);
 
           // Initial load user's track list from VK
           app.trigger('list.load', {type: 'my'});
@@ -104,12 +105,17 @@ define([
           }
         },
 
+        likeTrack: function likeTrack(model) {
+          app.log('likeTrack', model);
+        },
+
         playTrack: function playTrack(data) {
           app.log('app: playTrack: ', data);
           if (app.playerObject === null) {
+            app.log('ps1');
             app.playerObject = document.getElementById("mp3-player");
           }
-          if (data.url === undefined) {
+          if (data.url !== undefined) {
             $("#player small span").text(data.title);
             app.playerObject.SetVariable("player:jsStop", "");
             app.playerObject.SetVariable("player:jsUrl", data.url);
@@ -189,7 +195,7 @@ define([
                 api_key: app.lastfm.api_key
               },
               success: function (collection, response) {
-                if (response.similartracks === undefined) {
+                if (response.similartracks !== undefined) {
                   if (response.similartracks['#text'] === undefined) {
                     app.trigger('list.loaded', {data: params, collection: collection});
                   } else {
@@ -208,6 +214,7 @@ define([
           if (params.type === undefined) {
             params.type = 'lastfm';
           }
+
           switch (params.type) {
           case "my":
           case "vk":
@@ -226,8 +233,6 @@ define([
          **/
         showTrackList: function showTrackList(params) {
           app.log('app: showTrackList: params: ', params);
-
-          var listType = '';
 
           require(['views/tracksList/' + params.data.type + 'TracksList'], function (ListView) {
             var list = new ListView(params);

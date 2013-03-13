@@ -24,7 +24,7 @@ define([
       template: _.template(html),
 
       initialize: function () {
-        app.log('myTrackList: init');
+        app.log('lastfmTrackList: init');
         tracksListViewPrototype.prototype.initialize.apply(this, arguments);
       },
 

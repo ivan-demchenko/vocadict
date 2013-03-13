@@ -6,28 +6,34 @@ define([
 
   // Deps
   'app',
-  'views/track/prototype',
 
   // Template
   'text!templates/track/vkTrack.html'
 ],
-  function ($, _, Backbone, app, trackViewPrototype, html) {
+  function ($, _, Backbone, app, html) {
+    var View = Backbone.View.extend({
+      tagName: 'section',
+      className: 'item',
 
-    var View = trackViewPrototype.extend({
       initialize: function () {
         this.template = html;
-        trackViewPrototype.prototype.initialize.apply(this, arguments);
+        _.bindAll(this, 'selectMe', 'playTrack', 'render');
       },
-      /**
-       * Cliked on track's tag.
-       **/
-      selectMe: function (e) {
-        app.log('vkTrack clicked');
 
+      events: {
+        'click': 'selectMe',
+        'click .icon-play': 'playTrack'
+      },
+
+      selectMe: function selectMe(e) {
         e.preventDefault();
         e.stopPropagation();
 
-        trackViewPrototype.prototype.selectMe.apply(this, arguments);
+        app.log('vkTrack clicked');
+
+        this.el = e.currentTarget;
+        this.model.set('isActive', true);
+
         app.trigger('list.load', {
           $domElement: $(e.currentTarget).find('.sub-track'),
           artist: app.methods.decodeStr(this.model.get('artist')),
@@ -35,19 +41,22 @@ define([
           listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
         });
       },
-      /**
-       * Button Play clicked.
-       **/
-      playTrack: function playTrack(e) {
-        app.log('vkTrack: playTrack');
 
+      playTrack: function playTrack(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        app.log('vkTrack: playTrack');
 
         app.trigger('track.play', {
           title: this.model.getTrackCreds(),
           url: this.model.get('url')
         });
+      },
+
+      render: function render() {
+        var itemHTML = _.template(this.template, this.model.toJSON());
+        $(this.el).append(itemHTML);
       }
     });
 

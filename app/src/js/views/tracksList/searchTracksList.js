@@ -11,7 +11,7 @@ define([
   // Deps
   'app',
   'views/tracksList/prototype',
-  'views/track/vkTrack', // VKontakte track view
+  'views/track/searchTrack', // Search track view
 
   // Template
   'text!templates/tracksList/myTracksList.html'
