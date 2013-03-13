@@ -1,0 +1,95 @@
+@import "defaults"
+
+body
+  background #f2f2f2
+  padding-top 43px
+
+button
+  color #fff
+  multiprop(transition, .3s)
+
+#app-header
+  border-bottom solid 1px #ccc
+  box-shadow 0 0 9px #000
+  z-index 3
+  width 100%
+  top 0
+
+#logo
+  color #FED457
+  float left
+  font-size 20px
+  font-weight bold
+  padding 10px 15px
+
+#logo:hover
+  text-shadow 0 0 3px #999
+  text-decoration none
+
+#player
+  padding 0 10px
+  float left
+  line-height 1
+
+  #mp3-player
+    margin-top 7px
+
+.msg
+  padding 0
+  opacity 0
+  width 100%
+  position fixed
+  top 40px
+  z-index 2
+  multiprop(transition, .3s)
+  box-shadow 0 0 5px #444
+
+  .visible
+    opacity 1
+    padding 5px 10px
+
+  .red
+    border-bottom solid 1px red
+
+#search-box
+  padding 6px 10px 0 0
+
+  input
+    padding 5px
+
+#search-mp3-list
+  bottom 0
+  right 0
+  width 30%
+  top 40px
+
+#track-lists-wrapper
+  width 70%
+  top 40px
+  bottom 0
+  border-right solid 1px #ccc
+
+.tracks-list
+  font-size 11px
+  position relative
+
+  header
+    background #CB252A
+    color #fff
+    font-size 15px
+    padding 2px 5px
+    position relative
+
+    .icon-remove
+      cursor pointer
+      display block
+      font-style normal
+      position absolute
+      top 4px
+      right 4px
+
+  .item
+    border-bottom solid 1px #ccc
+
+    .sub-track
+      padding-left 30px
