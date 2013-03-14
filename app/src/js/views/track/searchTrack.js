@@ -13,7 +13,7 @@ define([
   function ($, _, Backbone, app, html) {
     var View = Backbone.View.extend({
       tagName: 'section',
-      className: 'item',
+      className: 'item clearfix',
 
       events: {
         'click .icon-play': 'playTrack',

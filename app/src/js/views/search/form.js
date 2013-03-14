@@ -44,7 +44,7 @@ function(app, $, _, Backbone, tmpl){
             app.trigger('list.load', {
                 type: 'lastfm',
                 artist: app.methods.decodeStr(artist),
-                title: app.methods.decodeStr(title), 
+                title: app.methods.decodeStr(title),
                 listTitle: 'Track similar to ' + artist + ' - ' + title
             });
         }
