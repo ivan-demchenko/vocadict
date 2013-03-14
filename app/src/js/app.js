@@ -1,5 +1,4 @@
-/** APP
- **/
+/** APP **/
 define([
   // Libs
   'jquery',
@@ -7,9 +6,7 @@ define([
   'backbone'
 ],
   function ($, _, BB) {
-
     var app = {};
-
     // Autoplay animation when data is been loading
     $.ajaxSetup({
       beforeSend: function () {
@@ -91,9 +88,8 @@ define([
               .addClass('visible');
           },
           hide: function () {
-            if (app.methods.messages.timer !== undefined) {
+            if (app.methods.messages.timer !== undefined)
               clearTimeout(app.methods.messages.timer);
-            }
 
             app.methods.messages.timer = setTimeout(function () {
               $("#messages").removeClass('visible');
