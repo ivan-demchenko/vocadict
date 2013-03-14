@@ -20,7 +20,8 @@ define([
           + '&redirect_uri=' + app.rootURL + '/vkauth'
           + '&display=page'
           + '&response_type=token';
-        window.open(url, 'VKAUTH', 'width=500,height=600');
+        window.location.href = url;
+        //window.open(url, 'VKAUTH', 'width=500,height=600');
       }
     });
     return Model;

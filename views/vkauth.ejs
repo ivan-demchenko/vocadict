@@ -9,7 +9,7 @@
 
   <title>VK Auth</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Backboneboilerplate.com is a community driven effort to help developers learn and rapidly deploy single page web applications" />
+  <meta name="description" content="Vocadict" />
   <link rel="stylesheet" href="css/styles.css" />
 
 </head>
@@ -19,7 +19,7 @@
           var item = s.split('=');
           window.localStorage.setItem(item[0], item[1]);
         });
-        window.opener.location.reload();
+        window.location.href = "http://localhost:3000";
         close();
     </script>
 </body>

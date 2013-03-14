@@ -36,7 +36,7 @@ define([
       },
       log: function () {
         if (app.debug && typeof window.console !== 'undefiend') {
-          window.console.log.apply(this, arguments);
+          window.console.log(arguments);
         }
       },
       views: {},
@@ -53,7 +53,7 @@ define([
          *
          **/
         start: function start() {
-          if (!app.vk.user_id || !app.vk.access_token) {
+          if (!!!app.vk.user_id || !!!app.vk.access_token) {
             this.authVK();
           } else {
             this.init();
