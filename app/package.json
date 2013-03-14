@@ -1,19 +1,11 @@
 {
-  "author": "Thomas Davies <thomasalwyndavis@gmail.com> (http://backbonetutorials.com/)",
-  "name": "backboneboilerplate",
-  "description": "A modular backbone environment",
-  "version": "0.0.0",
-  "homepage": "http://backboneboilerplate.com/",
+  "author": "Ivan Demchenko",
+  "name": "Vocadict",
+  "description": "Search music similar to your favourite",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/thomasdavis/backboneboilerplate.git"
-  },
-  "main": "build/server",
-  "engines": {
-    "node": "~0.8.20l"
-  },
-  "dependencies": {
-    "express": "~3.0.0"
+    "url": "https://github.com/raqystyle/vocadict.git"
   },
   "devDependencies": {
     "grunt": "~0.4.0",

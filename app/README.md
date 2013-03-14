@@ -1,1 +1,1 @@
-Vocadict
+Vocadict JavaScript App

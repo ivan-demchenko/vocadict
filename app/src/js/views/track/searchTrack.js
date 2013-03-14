@@ -38,7 +38,20 @@ define([
       },
 
       likeMe: function likeMe(e) {
-        app.trigger('track.likeMe', this.model);
+        var self = this;
+        $.ajax(app.vk.baseurl + 'audio.add', {
+          dataType: 'jsonp',
+          data: {
+            aid: self.model.get('aid'),
+            oid: self.model.get('owner_id'),
+            uid: app.vk.user_id,
+            access_token: app.vk.access_token
+          }
+        }).done(function(){
+          app.methods.messages.auto('blue', 'Audio added');
+        }).fail(function(){
+          app.methods.messages.auto('red', 'Audio adding failed');
+        });
       },
 
       render: function render() {

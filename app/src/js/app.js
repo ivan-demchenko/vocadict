@@ -67,7 +67,6 @@ define([
 
           app.on('track.search', this.searchTrack);
           app.on('track.play', this.playTrack);
-          app.on('track.like', this.likeTrack);
 
           // Initial load user's track list from VK
           app.trigger('list.load', {type: 'my'});
@@ -101,14 +100,9 @@ define([
           }
         },
 
-        likeTrack: function likeTrack(model) {
-          app.log('likeTrack', model);
-        },
-
         playTrack: function playTrack(data) {
           app.log('app: playTrack: ', data);
           if (app.playerObject === null) {
-            app.log('ps1');
             app.playerObject = document.getElementById("mp3-player");
           }
           if (data.url !== undefined) {
@@ -128,10 +122,7 @@ define([
           require(['app', 'collections/vkSongs'], function (app, SongsCollection) {
             var vkSongs = new SongsCollection({ method: params.method });
             vkSongs.fetch({
-              type: 'get',
-              crossDomain: true,
               dataType: 'jsonp',
-              cache: false,
               data: {
                 access_token: app.vk.access_token,
                 uid: app.vk.user_id,
@@ -139,7 +130,7 @@ define([
                 q: params.artist + ' - ' + params.title
               },
               success: function (collection) {
-                $("#search-mp3-list").html('');
+                params.$domElement.html('');
                 app.trigger('list.loaded', {data: params, collection: collection});
               }
             });
@@ -156,10 +147,7 @@ define([
           require(['app', 'collections/vkSongs'], function (app, SongsCollection) {
             var vkSongs = new SongsCollection({ method: params.method });
             vkSongs.fetch({
-              type: 'get',
-              crossDomain: true,
               dataType: 'jsonp',
-              cache: false,
               data: {
                 uid: app.vk.user_id,
                 access_token: app.vk.access_token

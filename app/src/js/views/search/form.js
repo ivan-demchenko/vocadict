@@ -45,7 +45,9 @@ function(app, $, _, Backbone, tmpl){
                 type: 'lastfm',
                 artist: app.methods.decodeStr(artist),
                 title: app.methods.decodeStr(title),
+                $domElement: $("#search-mp3-list"),
                 listTitle: 'Track similar to ' + artist + ' - ' + title
+
             });
         }
 
