@@ -19,7 +19,7 @@ define([
 
     // Setups, methods, keys, etc...
     app = {
-      debug: true,
+      debug: false,
       root: '/',
       rootURL: document.location.protocol + '//' + document.location.host,
       vk: {
