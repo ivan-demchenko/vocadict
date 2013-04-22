@@ -1,7 +1,6 @@
 /**
  * VK TRACK ITEM VIEW
-**/
-
+ **/
 define([
   // Libs
   'jquery',
@@ -25,7 +24,8 @@ define([
       },
 
       events: {
-        'click': 'selectMe',
+        'click a': 'selectMe',
+        'click header': 'reloadMe',
         'click .icon-search': 'searchTrack'
       },
 
@@ -33,7 +33,7 @@ define([
         e.preventDefault();
         e.stopPropagation();
 
-        app.log('lastfmTrack clicked');
+        app.log('lastfmTrack clicked: event', e);
 
         this.el = e.currentTarget;
         this.model.set('isActive', true);
@@ -42,8 +42,12 @@ define([
           artist: app.methods.decodeStr(this.model.get('artist').name),
           title: app.methods.decodeStr(this.model.get('name')),
           listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"',
-          $domElement: $(e.currentTarget).find('.sub-track')
+          $domElement: $(e.currentTarget).closest('.track-line').next()
         });
+      },
+
+      reloadMe: function reloadMe(e) {
+        e.stopPropagation();
       },
 
       searchTrack: function playTrack(e) {

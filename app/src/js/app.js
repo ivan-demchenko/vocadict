@@ -19,7 +19,7 @@ define([
 
     // Setups, methods, keys, etc...
     app = {
-      debug: false,
+      debug: true,
       root: '/',
       rootURL: document.location.protocol + '//' + document.location.host,
       vk: {
@@ -68,6 +68,8 @@ define([
           app.on('track.search', this.searchTrack);
           app.on('track.play', this.playTrack);
 
+          app.on('track.setActive', this.currentTrack.set)
+
           // Initial load user's track list from VK
           app.trigger('list.load', {type: 'my'});
         },
@@ -79,7 +81,7 @@ define([
         },
 
         messages: {
-          timer: undefined,
+          timer: null,
           show: function (type, text) {
             $("#messages")
               .html(text)
@@ -87,8 +89,9 @@ define([
               .addClass('visible');
           },
           hide: function () {
-            if (app.methods.messages.timer !== undefined)
+            if (app.methods.messages.timer !== null) {
               clearTimeout(app.methods.messages.timer);
+            }
 
             app.methods.messages.timer = setTimeout(function () {
               $("#messages").removeClass('visible');
@@ -97,6 +100,19 @@ define([
           auto: function (type, text) {
             app.methods.messages.show(type, text);
             app.methods.messages.hide();
+          }
+        },
+
+        currentTrack: {
+          current: null,
+          set: function (data) {
+            if (app.methods.currentTrack.current !== data.view) {
+              if (app.methods.currentTrack.current !== null) {
+                app.methods.currentTrack.current.toggleActive();
+              }
+              app.methods.currentTrack.current = data.view;
+              app.methods.currentTrack.current.toggleActive();
+            }
           }
         },
 
@@ -205,6 +221,7 @@ define([
             app.methods.loadVkTracklist(params);
             break;
           case "lastfm":
+          case "search":
             app.methods.loadSimilarTrackList(params);
             break;
           }
@@ -222,7 +239,7 @@ define([
             var list = new ListView(params);
             app.views[list.cid] = list;
             list.render();
-            params.data.$domElement.append(list.$el);
+            params.data.$domElement.html('').append(list.$el);
           });
         },
 

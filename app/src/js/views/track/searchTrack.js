@@ -22,7 +22,7 @@ define([
 
       initialize: function () {
         this.template = html;
-        _.bindAll(this, 'playTrack', 'likeMe', 'render');
+        _.bindAll(this, 'playTrack', 'likeMe', 'render', 'toggleActive');
       },
 
       playTrack: function playTrack(e) {
@@ -35,6 +35,12 @@ define([
           title: this.model.getTrackCreds(),
           url: this.model.get('url')
         });
+
+        app.trigger('track.setActive', {view: this});
+      },
+
+      toggleActive: function () {
+        this.$el.toggleClass('active');
       },
 
       likeMe: function likeMe(e) {

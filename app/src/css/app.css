@@ -24,3 +24,4 @@ button:hover{background:#4096ee;border-color:#4096ee}
 .blue-step-gradient,.msg.blue{background:#e0f3fa;background:-moz-linear-gradient(top,#e0f3fa 0%,#b6dffd 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#e0f3fa),color-stop(100%,#b6dffd));background:-webkit-linear-gradient(top,#e0f3fa 0%,#b6dffd 100%);background:-o-linear-gradient(top,#e0f3fa 0%,#b6dffd 100%);background:-ms-linear-gradient(top,#e0f3fa 0%,#b6dffd 100%);background:linear-gradient(#b6dffd bottom,#e0f3fa 0%,#b6dffd 100%);text-shadow:1px 1px 0 #fff}
 #logo{color:#444}
 button{width:30px}
+.tracks-list .item.active{background:#dbdbdb}

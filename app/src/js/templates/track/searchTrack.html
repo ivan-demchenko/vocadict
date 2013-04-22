@@ -1,4 +1,17 @@
 <div class="track-line" data-type="vk">
     <button class="icon-play flt-l"></button><button class="icon-heart flt-l"></button>
-    <span class="disp-tc flt-l"><strong><%= artist %></strong> - <%= title %></span>
+    <span>
+      <% if (typeof(artist) === 'string') { %>
+        <strong><%= artist %></strong>
+      <% } %>
+      <% if (typeof(artist) === 'object') { %>
+        <strong><%= artist.name %></strong>
+      <% } %>
+
+      <% if (typeof(title) !== 'undefined') { %>
+        - <%= title %>
+      <% } %>
+      <% if (typeof(name) !== 'undefined') { %>
+        - <%= name %>
+      <% } %>
 </div>

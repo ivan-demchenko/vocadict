@@ -23,14 +23,12 @@ define([
         template: _.template(html),
 
         initialize: function () {
-          app.log('searchTrackList: init');
           tracksListViewPrototype.prototype.initialize.apply(this, arguments);
         },
 
         render: function render() {
-          app.log('searchTracksList: render: this', this);
-
           var docFrag = document.createDocumentFragment();
+
           this.collection.each(function (TrackModel) {
             if (TrackModel.get('artist') !== 'Unknown') {
               var view = new TrackView({ model: TrackModel });
@@ -38,6 +36,7 @@ define([
               docFrag.appendChild(view.el);
             }
           });
+
           this.$el.find('div')[0].appendChild(docFrag);
 
           return this;

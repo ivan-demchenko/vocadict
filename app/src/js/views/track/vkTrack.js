@@ -17,11 +17,11 @@ define([
 
       initialize: function () {
         this.template = html;
-        _.bindAll(this, 'selectMe', 'playTrack', 'render');
+        _.bindAll(this, 'selectMe', 'playTrack', 'render', 'toggleActive');
       },
 
       events: {
-        'click': 'selectMe',
+        'click a': 'selectMe',
         'click .icon-play': 'playTrack'
       },
 
@@ -29,13 +29,13 @@ define([
         e.preventDefault();
         e.stopPropagation();
 
-        app.log('vkTrack clicked');
+        app.log('vkTrack clicked: event', e);
 
         this.el = e.currentTarget;
         this.model.set('isActive', true);
 
         app.trigger('list.load', {
-          $domElement: $(e.currentTarget).find('.sub-track'),
+          $domElement: $(e.currentTarget).closest('.track-line').next(),
           artist: app.methods.decodeStr(this.model.get('artist')),
           title: app.methods.decodeStr(this.model.get('title')),
           listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
@@ -52,6 +52,12 @@ define([
           title: this.model.getTrackCreds(),
           url: this.model.get('url')
         });
+
+        app.trigger('track.setActive', {view: this});
+      },
+
+      toggleActive: function () {
+        this.$el.toggleClass('active');
       },
 
       render: function render() {

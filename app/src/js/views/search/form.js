@@ -1,57 +1,51 @@
 define([
-// Deps
-'app',
-'jquery',
-'underscore',
-'backbone',
+  // Deps
+  'app',
+  'jquery',
+  'underscore',
+  'backbone',
 
-// Template
-'text!templates/search/form.html'
-],
-function(app, $, _, Backbone, tmpl){
+  // Template
+  'text!templates/search/form.html'
+], function (app, $, _, Backbone, tmpl) {
+  var View = Backbone.View.extend({
+    template: _.template(tmpl),
+    className: "flt-r",
+    id: "search-box",
 
-    var View = Backbone.View.extend({
+    events: {
+      "click #go-search": "makeSearch"
+    },
 
-        template: _.template(tmpl),
-        className: "flt-r",
-        id: "search-box",
+    initialize: function () {
+      _.bindAll(this, 'fillUpForm');
+      app.on('list.load', this.fillUpForm);
+    },
 
-        events: {
-            "click #go-search": "makeSearch"
-        },
+    render: function () {
+      this.$el.append(this.template());
+      return this;
+    },
 
-        initialize: function() {
-            _.bindAll(this, 'fillUpForm');
-            app.on('list.load', this.fillUpForm);
-        },
+    fillUpForm: function (data) {
+      this.$el.find('#search-artist').val(data.artist);
+      this.$el.find('#search-title').val(data.title);
+    },
 
-        render: function() {
-            this.$el.append(this.template());
-            return this;
-        },
+    makeSearch: function (e) {
+      e.preventDefault();
 
-        fillUpForm: function(data) {
-            this.$el.find('#search-artist').val(data.artist);
-            this.$el.find('#search-title').val(data.title);
-        },
+      var artist = this.$el.find('#search-artist').val();
+      var title = this.$el.find('#search-title').val();
 
-        makeSearch: function(e) {
-            e.preventDefault();
-
-            var artist = this.$el.find('#search-artist').val();
-            var title = this.$el.find('#search-title').val();
-
-            app.trigger('list.load', {
-                type: 'lastfm',
-                artist: app.methods.decodeStr(artist),
-                title: app.methods.decodeStr(title),
-                $domElement: $("#search-mp3-list"),
-                listTitle: 'Track similar to ' + artist + ' - ' + title
-
-            });
-        }
-
-    });
-
-    return View;
+      app.trigger('list.load', {
+        type: 'search',
+        artist: app.methods.decodeStr(artist),
+        title: app.methods.decodeStr(title),
+        $domElement: $("#search-mp3-list"),
+        listTitle: 'Search similar tracks for "' + artist + ' - ' + title + '"'
+      });
+    }
+  });
+  return View;
 });
