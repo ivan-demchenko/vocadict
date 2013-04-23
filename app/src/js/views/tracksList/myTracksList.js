@@ -17,7 +17,6 @@ define([
   'text!templates/tracksList/myTracksList.html'
 ],
   function ($, _, Backbone, app, tracksListViewPrototype, TrackView, html) {
-
     var View = tracksListViewPrototype.extend({
 
         template: _.template(html),

@@ -3,9 +3,17 @@ define([
   // Libs
   'jquery',
   'underscore',
-  'backbone'
+  'backbone',
+  // Collections
+  'collections/vkSongs',
+  'collections/lastfmSongs',
+  // Views
+  'views/tracksList/prototype',
+  'views/tracksList/lastfmTracksList',
+  'views/tracksList/myTracksList',
+  'views/tracksList/searchTracksList'
 ],
-  function ($, _, BB) {
+  function ($, _, BB, SongsCollection, LastCollection, tracksListViewPrototype, lastfmTracksList, myTracksList, searchTracksList) {
     var app = {};
     // Autoplay animation when data is been loading
     $.ajaxSetup({
@@ -135,23 +143,21 @@ define([
           params.$domElement = $("#search-mp3-list");
           params.listTitle = 'Variants of "' + params.artist + " - " + params.title + '"';
 
-          require(['app', 'collections/vkSongs'], function (app, SongsCollection) {
-            var vkSongs = new SongsCollection({ method: params.method });
-            vkSongs.fetch({
-              dataType: 'jsonp',
-              data: {
-                access_token: app.vk.access_token,
-                uid: app.vk.user_id,
-                method: 'audio.search',
-                q: params.artist + ' - ' + params.title
-              },
-              success: function (collection) {
-                params.$domElement.html('');
-                app.trigger('list.loaded', {data: params, collection: collection});
-              }
-            });
-            app.collections.push(vkSongs);
+          var vkSongs = new SongsCollection({ method: params.method });
+          vkSongs.fetch({
+            dataType: 'jsonp',
+            data: {
+              access_token: app.vk.access_token,
+              uid: app.vk.user_id,
+              method: 'audio.search',
+              q: params.artist + ' - ' + params.title
+            },
+            success: function (collection) {
+              params.$domElement.html('');
+              app.trigger('list.loaded', {data: params, collection: collection});
+            }
           });
+          app.collections.push(vkSongs);
         },
 
         loadVkTracklist: function loadVkTracklist(params) {
@@ -160,52 +166,48 @@ define([
           params.$domElement = $('#track-lists-wrapper');
           params.listTitle = 'My Tracklist';
 
-          require(['app', 'collections/vkSongs'], function (app, SongsCollection) {
-            var vkSongs = new SongsCollection({ method: params.method });
-            vkSongs.fetch({
-              dataType: 'jsonp',
-              data: {
-                uid: app.vk.user_id,
-                access_token: app.vk.access_token
-              },
-              error: function (jqXHR, textStatus, errorThrown) {
-                app.log(jqXHR, textStatus, errorThrown);
-              },
-              success: function (collection, response) {
-                if (response.error) {
-                  app.messages.auto(response.error.error_msg);
-                }
-                app.trigger('list.loaded', {data: params, collection: collection});
+          var vkSongs = new SongsCollection({ method: params.method });
+          vkSongs.fetch({
+            dataType: 'jsonp',
+            data: {
+              uid: app.vk.user_id,
+              access_token: app.vk.access_token
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              app.log(jqXHR, textStatus, errorThrown);
+            },
+            success: function (collection, response) {
+              if (response.error) {
+                app.messages.auto(response.error.error_msg);
               }
-            });
-            app.collections.push(vkSongs);
+              app.trigger('list.loaded', {data: params, collection: collection});
+            }
           });
+          app.collections.push(vkSongs);
         },
 
         loadSimilarTrackList: function loadSimilarTrackList(params) {
-          require(['collections/lastfmSongs'], function (LastCollection) {
-            var collection = new LastCollection();
-            collection.fetch({
-              data: {
-                track: params.title,
-                artist: params.artist,
-                autocorrect: 1,
-                format: 'json',
-                method: 'track.getsimilar',
-                api_key: app.lastfm.api_key
-              },
-              success: function (collection, response) {
-                if (response.similartracks !== undefined) {
-                  if (response.similartracks['#text'] === undefined) {
-                    app.trigger('list.loaded', {data: params, collection: collection});
-                  } else {
-                    app.methods.messages.auto('red', 'Similar tracks not found.');
-                  }
+          var collection = new LastCollection();
+          collection.fetch({
+            data: {
+              track: params.title,
+              artist: params.artist,
+              autocorrect: 1,
+              format: 'json',
+              method: 'track.getsimilar',
+              api_key: app.lastfm.api_key
+            },
+            success: function (collection, response) {
+              if (response.similartracks !== undefined) {
+                if (response.similartracks['#text'] === undefined) {
+                  app.trigger('list.loaded', {data: params, collection: collection});
+                } else {
+                  app.methods.messages.auto('red', 'Similar tracks not found.');
                 }
               }
-            });
-            app.collections.push(collection);
+            }
           });
+          app.collections.push(collection);
         },
 
         loadList: function loadList(params) {

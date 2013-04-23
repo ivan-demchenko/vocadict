@@ -1,64 +1,53 @@
 module.exports = function (grunt) {
   "use strict";
-
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   // Project configuration.
   grunt.initConfig({
-
-    pkg: grunt.file.readJSON('package.json'),
-
     stylus: {
       compile: {
         options: {
           paths: ['src/css/src']
         },
         files: {
-          'app.css': ['src/css/src/*.styl'] // compile and concat into single file
+          'temp/app.css': ['src/css/src/*.styl']
         }
       }
     },
-
     cssmin: {
       compress: {
         files: {
-          "build/app.min.css": ["css/full.css", "css/app.css", "css/theme.css"]
+          "app.min.css": ["src/css/full.css", "temp/app.css"]
         }
       }
     },
-
     requirejs: {
       compile: {
         options: {
           name: 'main',
+          baseUrl: "src/js/",
+          include: ['main'],
           optimize: "uglify",
-          baseUrl: "js/",
-          mainConfigFile: "js/config.js",
-          out: "build/app.js"
+          mainConfigFile: "src/js/config.js",
+          insertRequire: ['main'],
+          out: "temp/app.js",
+          inlineText: true,
+          wrap: true,
+          findNestedDependencies: true
         }
       }
     },
-
     uglify: {
       build: {
         files: {
-          'build/app.min.js': ['build/app.js']
+          'app.min.js': ['temp/app.js']
         }
       }
     },
-
-    jshint: {
-      build: {
-        all: ['Gruntfile.js', 'build/app.min.js']
-      }
-    }
-
+    clean: ["temp"]
   });
-
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks("grunt-contrib-jshint");
-  grunt.loadNpmTasks('grunt-contrib-stylus');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-
-  grunt.registerTask('default', ['stylus', 'cssmin', 'requirejs', 'uglify', 'jshint']);
-
+  grunt.registerTask('default', ['stylus', 'cssmin', 'requirejs', 'uglify', 'clean']);
 };

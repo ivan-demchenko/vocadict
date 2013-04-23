@@ -4,9 +4,10 @@
 
 define([
 // Deps
+'app',
 'backbone'
 ],
-function(Backbone){
+function(app, Backbone){
     var Model = Backbone.Model.extend({
         defaults: {
             "name": "Unknown",

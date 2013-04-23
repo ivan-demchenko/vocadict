@@ -8,11 +8,13 @@
     "url": "https://github.com/raqystyle/vocadict.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.0",
+    "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-uglify": "~0.1.1",
     "grunt-contrib-cssmin": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.0",
-    "grunt-contrib-stylus": "~0.4.0"
+    "grunt-contrib-stylus": "~0.4.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-requirejs": "~0.4.0"
   }
 }

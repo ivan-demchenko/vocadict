@@ -13,6 +13,10 @@ require.config({
   deps: ['main'],
 
   shim: {
+    main: {
+      deps: ['app']
+    },
+
     underscore: {
       exports: "_"
     },

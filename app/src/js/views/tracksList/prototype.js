@@ -4,9 +4,10 @@
 define([
   // Libs
   'underscore',
-  'backbone'
+  'backbone',
+  'app'
 ],
-  function (_, Backbone) {
+  function (_, Backbone, app) {
 
     var View = Backbone.View.extend({
 
