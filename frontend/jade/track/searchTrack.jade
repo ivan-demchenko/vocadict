@@ -1,0 +1,19 @@
+div.track-line(data-type="search")
+
+  button.icon-play.flt-l
+  button.icon-heart.flt-l
+
+  span
+    <% if (typeof(artist) === 'string') { %>
+    strong <%= artist %>
+    <% } %>
+    <% if (typeof(artist) === 'object') { %>
+    strong <%= artist.name %>
+    <% } %>
+
+    <% if (typeof(title) !== 'undefined') { %>
+    span - <%= title %>
+    <% } %>
+    <% if (typeof(name) !== 'undefined') { %>
+    span - <%= name %>
+    <% } %>

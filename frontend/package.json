@@ -1,6 +1,6 @@
 {
   "author": "Ivan Demchenko",
-  "name": "Vocadict Front-end sources",
+  "name": "Vocadict_Front_end_sources",
   "description": "Search music similar to your favourite",
   "version": "0.0.1",
   "repository": {
@@ -16,6 +16,8 @@
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-concat": "~0.2.0",
     "grunt-contrib-requirejs": "~0.4.0",
-    "grunt-contrib-watch": "~0.3.1"
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-jade": "~0.5.0"
   }
 }

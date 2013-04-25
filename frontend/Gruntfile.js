@@ -6,50 +6,122 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-jade');
   // Project configuration.
   grunt.initConfig({
+
     watch: {
+      templates: {
+        files: ['jade/**/*.jade'],
+        tasks: ['jade']
+      },
       style: {
-        files: ['css/app.styl'],
-        tasks: ['stylus', 'cssmin']
+        files: ['stylus/**/*.styl'],
+        tasks: ['stylus:dev']
+      },
+      scripts: {
+        files: ['coffee/**/*.coffee'],
+        tasks: ['coffee', 'requirejs:dev']
       }
     },
+
     stylus: {
-      compile: {
+      dev: {
         options: {
-          paths: ['css']
+          compress: false
         },
         files: {
-          'temp/app.css': ['css/app.styl']
+          '../app/dev/app.css': ['stylus/app.styl']
         }
-      }
-    },
-    cssmin: {
-      compress: {
+      },
+      prod: {
         files: {
-          "../app/app.min.css": ["temp/app.css"]
+          'temp/app.css': ['stylus/app.styl']
         }
       }
     },
-    requirejs: {
+
+    cssmin: {
+      prod: {
+        files: {
+          "../app/app.css": ["temp/app.css"]
+        }
+      }
+    },
+
+    jade: {
       compile: {
         options: {
-          findNestedDependencies: true,
-          name: 'app',
-          baseUrl: "js",
-          mainConfigFile: "js/config.js",
+          comileDebug: true,
+          pretty: true
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'jade',
+            src: ['**/*.jade'],
+            dest: 'staging/templates',
+            ext: '.html'
+          }
+        ]
+      }
+    },
+
+    coffee: {
+      compile: {
+        options: {
+          bare: true
+        },
+        files: [
+          {
+            dest: 'staging/config.js',
+            src: 'coffee/config.coffee'
+          },
+          {
+            dest: 'staging/app.js',
+            src: ['coffee/**/*.coffee', '!coffee/config.coffee']
+          }
+        ]
+      }
+    },
+
+    requirejs: {
+      options: {
+        inlineText: true,
+        findNestedDependencies: true,
+        name: 'app',
+        baseUrl: "./staging",
+        mainConfigFile: "staging/config.js",
+      },
+      dev: {
+        options: {
+          optimize: "none",
+          out: "../app/dev/app.js"
+        }
+      },
+      prod: {
+        options: {
+          optimize: "uglify",
           out: "temp/app.js"
         }
       }
     },
+
     uglify: {
-      build: {
+      prod: {
         files: {
-          '../app/app.min.js': ['temp/app.js']
+          '../app/app.js': ['temp/app.js']
         }
       }
     },
-    clean: ["temp"]
+
+    clean: {
+      dev: ["temp"],
+      prod: ["temp", "staging"]
+    }
   });
-  grunt.registerTask('default', ['stylus', 'cssmin', 'requirejs', 'uglify', 'clean']);
+
+  grunt.registerTask('build-dev', ['stylus:dev', 'requirejs:dev', 'clean:dev']);
+  grunt.registerTask('build-prod', ['stylus:prod', 'cssmin', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
 };

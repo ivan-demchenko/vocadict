@@ -4,7 +4,7 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
+  , routes = require('./routes/routes')
   , http = require('http')
   , path = require('path');
 
@@ -33,6 +33,6 @@ app.get('/', routes.index);
 app.get('/similar/:a/:t', routes.index);
 app.get('/vkauth', routes.vkauth);
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log("Express server listening on port " + app.get('port'));
 });
