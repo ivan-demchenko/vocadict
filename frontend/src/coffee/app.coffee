@@ -13,25 +13,27 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
     root: '/'
     rootURL: document.location.protocol + '//' + document.location.host
     vk:
-      app_id: '3410757',
-      secire_key: 'kZ41aLiatYNmn8JSZxYH',
-      access_token: window.localStorage.getItem('access_token'),
-      user_id: window.localStorage.getItem('user_id'),
+      app_id: '3410757'
+      secire_key: 'kZ41aLiatYNmn8JSZxYH'
+      access_token: window.localStorage.getItem('access_token')
+      user_id: window.localStorage.getItem('user_id')
       baseurl: 'https://api.vk.com/method/'
 
     lastfm:
-      url: 'http://ws.audioscrobbler.com/2.0/',
-      api_key: 'c1c6fd197f66044294bd73a350345a6d',
+      url: 'http://ws.audioscrobbler.com/2.0/'
+      api_key: 'c1c6fd197f66044294bd73a350345a6d'
       secret: '825bc2441bbbdaf88f29e8d4fce8552f'
 
     log: ->
       window.console.log arguments if app.debug && window.console?
 
-    views: {},
-    trackListList: {},
-    collections: [],
-    models: {},
-    playerObject: null,
+    views: {}
+    trackListList: {}
+    collections: []
+    models: {}
+    player:
+      man: null
+      currSong: null
     start: ->
       $(document).on "click", "a[href]:not([data-bypass])", (evt) ->
         href = prop: $(this).prop("href"), attr: $(this).attr("href")
@@ -59,6 +61,14 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
         app.on 'track.setActive', app.methods.currentTrack.set
 
         app.trigger 'list.load', type: 'my'
+
+        SoundMan.setup
+          url: '/vendor/soundmanager/soundmanager2.swf'
+          onready: ->
+            app.player.man = SoundMan if app.player.man is null
+            require ['views/player/playerView'], (PlayerView) ->
+              app.views.player = new PlayerView()
+              app.views.player.render()
 
     authVK: ->
       VkAuth = require ['models/vkAuth']
@@ -99,8 +109,15 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
         # app.playerObject = app.playerObject || document.getElementById "mp3-player"
 
         if data.url?
-          SoundMan.createSound id: 'test', url: data.url
-          SoundMan.play();
+          app.player.currSong.destruct() if app.player.currSong isnt null
+
+          app.player.currSong = app.player.man.createSound
+            id: 'test'
+            url: data.url
+            autoLoad: true
+            autoPlay: true
+
+          app.player.currSong.play()
           #$("#player small span").text data.title
           #app.playerObject.SetVariable "player:jsStop", ""
           #app.playerObject.SetVariable "player:jsUrl", data.url

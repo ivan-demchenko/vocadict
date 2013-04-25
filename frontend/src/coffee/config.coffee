@@ -13,7 +13,8 @@
       "text!templates/track/searchTrack.html",
       "text!templates/track/vkTrack.html",
       "text!templates/tracksList/lastfmTracksList.html",
-      "text!templates/tracksList/myTracksList.html"
+      "text!templates/tracksList/myTracksList.html",
+      "text!templates/player/player.html"
     ]
 
     shim:

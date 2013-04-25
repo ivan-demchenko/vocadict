@@ -12024,7 +12024,9 @@ define('text',['module'], function (module) {
 
 define('text!templates/search/form.html',[],function () { return '\n<input type="text" id="search-artist" placeholder="Artist or Band..."/>\n<input type="text" id="search-title" placeholder="Track title..."/>\n<button type="submit" id="go-search">Go</button>';});
 
-define('text!templates/layout.html',[],function () { return '\n<header id="app-header" class="silver-step-gradient flt-l pos-f"><a id="logo" href="/">Vocadict</a>\n  <div id="player"><small>Now plaing:<span></span></small><br/>\n    <object id="mp3-player" type="application/x-shockwave-flash" data="player/player.swf" width="500" height="16">\n      <param name="movie" value="player/player.swf"></param>\n      <param name="bgcolor" value="#d1d1d1"></param>\n      <param name="FlashVars" value="mp3=&amp;width=500&amp;height=16&amp;lvolume=175&amp;showstop=1&amp;showvolume=1&amp;showloading=always&amp;sliderheight=12&amp;volumewidth=60&amp;volumeheight=12&amp;loadingcolor=309dcf&amp;bgcolor1=d1d1d1&amp;bgcolor2=d1d1d1&amp;slidercolor1=BCBCBC&amp;slidercolor2=DFE5D7&amp;sliderovercolor=309dcf&amp;buttonovercolor=309dcf"></param>\n    </object>\n    <div id="mp3-list"></div>\n  </div>\n</header>\n<div id="messages" class="msg"></div>\n<div id="app-body" class="flt-l w100 pos-r">\n  <div id="track-lists-wrapper" class="pos-f scrl"></div>\n  <div id="search-mp3-list" class="pos-f scrl"></div>\n</div>';});
+define('text!templates/layout.html',[],function () { return '\n<header id="app-header" class="silver-step-gradient flt-l pos-f"><a id="logo" href="/">Vocadict</a>\n  <div id="player"></div>\n</header>\n<div id="messages" class="msg"></div>\n<div id="app-body" class="flt-l w100 pos-r">\n  <div id="track-lists-wrapper" class="pos-f scrl"></div>\n  <div id="search-mp3-list" class="pos-f scrl"></div>\n</div>';});
+
+define('text!templates/player/player.html',[],function () { return '\n<div id="player-wrapper">\n  <button id="play-song" class="small">play</button>\n  <button id="stop-song" class="small">stop</button>\n</div>';});
 
 define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, _, Backbone, SoundMan) {
   var app;
@@ -12063,7 +12065,10 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
     trackListList: {},
     collections: [],
     models: {},
-    playerObject: null,
+    player: {
+      man: null,
+      currSong: null
+    },
     start: function() {
       $(document).on("click", "a[href]:not([data-bypass])", function(evt) {
         var href, root;
@@ -12096,8 +12101,20 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
         app.on('track.search', app.methods.searchTrack);
         app.on('track.play', app.methods.playTrack);
         app.on('track.setActive', app.methods.currentTrack.set);
-        return app.trigger('list.load', {
+        app.trigger('list.load', {
           type: 'my'
+        });
+        return SoundMan.setup({
+          url: '/vendor/soundmanager/soundmanager2.swf',
+          onready: function() {
+            if (app.player.man === null) {
+              app.player.man = SoundMan;
+            }
+            return require(['views/player/playerView'], function(PlayerView) {
+              app.views.player = new PlayerView();
+              return app.views.player.render();
+            });
+          }
         });
       });
     },
@@ -12144,11 +12161,16 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
       playTrack: function(data) {
         app.log('app: playTrack: ', data);
         if (data.url != null) {
-          SoundMan.createSound({
+          if (app.player.currSong !== null) {
+            app.player.currSong.destruct();
+          }
+          app.player.currSong = app.player.man.createSound({
             id: 'test',
-            url: data.url
+            url: data.url,
+            autoLoad: true,
+            autoPlay: true
           });
-          SoundMan.play();
+          app.player.currSong.play();
         }
         return this;
       },
@@ -12396,14 +12418,24 @@ define('views/layout', ['jquery', 'underscore', 'backbone', 'app', 'views/search
 
 define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 'text!templates/player/player.html'], function(app, $, _, Backbone, html) {
   return Backbone.View.extend({
-    el: $("#app-header div#player"),
+    el: $("#app-header #player"),
     template: _.template(html),
+    events: {
+      '#play-song click': 'playSong',
+      '#stop-song click': 'stopSong'
+    },
     initialize: function() {
       this.$el.attr('class', 'flt-l');
       return _.bindAll(this, 'render');
     },
     render: function(data) {
       return $(this.el).html(this.template(data));
+    },
+    playSong: function() {
+      return app.player.currSong.play();
+    },
+    stopSong: function() {
+      return app.player.currSong.stop();
     },
     playFromURL: function(URL) {
       return $(this.el).find("audio#player source").attr('src', URL);

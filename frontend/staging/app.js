@@ -35,7 +35,10 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
     trackListList: {},
     collections: [],
     models: {},
-    playerObject: null,
+    player: {
+      man: null,
+      currSong: null
+    },
     start: function() {
       $(document).on("click", "a[href]:not([data-bypass])", function(evt) {
         var href, root;
@@ -68,8 +71,20 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
         app.on('track.search', app.methods.searchTrack);
         app.on('track.play', app.methods.playTrack);
         app.on('track.setActive', app.methods.currentTrack.set);
-        return app.trigger('list.load', {
+        app.trigger('list.load', {
           type: 'my'
+        });
+        return SoundMan.setup({
+          url: '/vendor/soundmanager/soundmanager2.swf',
+          onready: function() {
+            if (app.player.man === null) {
+              app.player.man = SoundMan;
+            }
+            return require(['views/player/playerView'], function(PlayerView) {
+              app.views.player = new PlayerView();
+              return app.views.player.render();
+            });
+          }
         });
       });
     },
@@ -116,11 +131,16 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
       playTrack: function(data) {
         app.log('app: playTrack: ', data);
         if (data.url != null) {
-          SoundMan.createSound({
+          if (app.player.currSong !== null) {
+            app.player.currSong.destruct();
+          }
+          app.player.currSong = app.player.man.createSound({
             id: 'test',
-            url: data.url
+            url: data.url,
+            autoLoad: true,
+            autoPlay: true
           });
-          SoundMan.play();
+          app.player.currSong.play();
         }
         return this;
       },
@@ -368,14 +388,24 @@ define('views/layout', ['jquery', 'underscore', 'backbone', 'app', 'views/search
 
 define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 'text!templates/player/player.html'], function(app, $, _, Backbone, html) {
   return Backbone.View.extend({
-    el: $("#app-header div#player"),
+    el: $("#app-header #player"),
     template: _.template(html),
+    events: {
+      '#play-song click': 'playSong',
+      '#stop-song click': 'stopSong'
+    },
     initialize: function() {
       this.$el.attr('class', 'flt-l');
       return _.bindAll(this, 'render');
     },
     render: function(data) {
       return $(this.el).html(this.template(data));
+    },
+    playSong: function() {
+      return app.player.currSong.play();
+    },
+    stopSong: function() {
+      return app.player.currSong.stop();
     },
     playFromURL: function(URL) {
       return $(this.el).find("audio#player source").attr('src', URL);

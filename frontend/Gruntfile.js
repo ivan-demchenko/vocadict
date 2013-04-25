@@ -58,6 +58,9 @@ module.exports = function (grunt) {
             src: ['*'],
             dest: '../app/vendor/fonts/',
             filter: 'isFile'
+          }, {
+            src: ['components/soundmanager/swf/soundmanager2.swf'],
+            dest: '../app/vendor/soundmanager/soundmanager2.swf'
           }
         ]
       }
