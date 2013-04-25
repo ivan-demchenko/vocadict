@@ -8,20 +8,72 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   // Project configuration.
   grunt.initConfig({
 
+    copy: {
+      main: {
+        files: [
+          {
+            src: ['components/requirejs/require.js'],
+            dest: 'staging/libs/require.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/text/text.js'],
+            dest: 'staging/libs/text.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/backbone/backbone.js'],
+            dest: 'staging/libs/backbone.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/jquery/jquery.js'],
+            dest: 'staging/libs/jquery.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/underscore/underscore.js'],
+            dest: 'staging/libs/underscore.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/requirejs/require.js'],
+            dest: '../app/vendor/require.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/soundmanager/script/soundmanager2-nodebug-jsmin.js'],
+            dest: 'staging/libs/soundmanager.js',
+            filter: 'isFile'
+          }, {
+            src: ['components/normalize-css/normalize.css'],
+            dest: '../app/vendor/cssframework/vendor/normalize.css'
+          }, {
+            src: ['components/cssframework/css/full.css'],
+            dest: '../app/vendor/cssframework/full.css'
+          }, {
+            src: ['components/font-awesome/css/font-awesome.min.css'],
+            dest: '../app/vendor/cssframework/vendor/Font-Awesome/css/font-awesome.css'
+          }, {
+            expand: true,
+            cwd: 'components/cssframework/css/vendor/Font-Awesome/font/',
+            src: ['*'],
+            dest: '../app/vendor/fonts/',
+            filter: 'isFile'
+          }
+        ]
+      }
+    },
+
     watch: {
       templates: {
-        files: ['jade/**/*.jade'],
+        files: ['src/jade/**/*.jade'],
         tasks: ['jade']
       },
       style: {
-        files: ['stylus/**/*.styl'],
+        files: ['src/stylus/**/*.styl'],
         tasks: ['stylus:dev']
       },
       scripts: {
-        files: ['coffee/**/*.coffee'],
+        files: ['src/coffee/**/*.coffee'],
         tasks: ['coffee', 'requirejs:dev']
       }
     },
@@ -32,12 +84,12 @@ module.exports = function (grunt) {
           compress: false
         },
         files: {
-          '../app/dev/app.css': ['stylus/app.styl']
+          '../app/dev/app.css': ['src/stylus/app.styl']
         }
       },
       prod: {
         files: {
-          'temp/app.css': ['stylus/app.styl']
+          'temp/app.css': ['src/stylus/app.styl']
         }
       }
     },
@@ -59,7 +111,7 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: 'jade',
+            cwd: 'src/jade',
             src: ['**/*.jade'],
             dest: 'staging/templates',
             ext: '.html'
@@ -76,11 +128,11 @@ module.exports = function (grunt) {
         files: [
           {
             dest: 'staging/config.js',
-            src: 'coffee/config.coffee'
+            src: 'src/coffee/config.coffee'
           },
           {
             dest: 'staging/app.js',
-            src: ['coffee/**/*.coffee', '!coffee/config.coffee']
+            src: ['src/coffee/**/*.coffee', '!src/coffee/config.coffee']
           }
         ]
       }
@@ -92,7 +144,7 @@ module.exports = function (grunt) {
         findNestedDependencies: true,
         name: 'app',
         baseUrl: "./staging",
-        mainConfigFile: "staging/config.js",
+        mainConfigFile: "staging/config.js"
       },
       dev: {
         options: {
@@ -122,6 +174,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build-dev', ['stylus:dev', 'requirejs:dev', 'clean:dev']);
-  grunt.registerTask('build-prod', ['stylus:prod', 'cssmin', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
+  grunt.registerTask('build-dev', ['copy', 'stylus:dev', 'coffee', 'requirejs:dev', 'clean:dev']);
+  grunt.registerTask('build-prod', ['copy', 'stylus:prod', 'cssmin', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
 };
