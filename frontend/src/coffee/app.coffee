@@ -1,5 +1,5 @@
-define 'app', ['jquery','underscore','backbone'],
-($, _, Backbone) ->
+define 'app', ['jquery','underscore','backbone', 'soundManager'],
+($, _, Backbone, SoundMan) ->
   app = _.extend {}, Backbone.Events
 
   $.ajaxSetup
@@ -96,14 +96,16 @@ define 'app', ['jquery','underscore','backbone'],
 
       playTrack: (data) ->
         app.log 'app: playTrack: ', data
-        app.playerObject = app.playerObject || document.getElementById "mp3-player"
+        # app.playerObject = app.playerObject || document.getElementById "mp3-player"
 
         if data.url?
-          $("#player small span").text data.title
-          app.playerObject.SetVariable "player:jsStop", ""
-          app.playerObject.SetVariable "player:jsUrl", data.url
-          app.playerObject.SetVariable "player:jsPlay", ""
-
+          SoundMan.createSound id: 'test', url: data.url
+          SoundMan.play();
+          #$("#player small span").text data.title
+          #app.playerObject.SetVariable "player:jsStop", ""
+          #app.playerObject.SetVariable "player:jsUrl", data.url
+          #app.playerObject.SetVariable "player:jsPlay", ""
+        @
       searchTrack: (params) ->
         app.log 'app: searchTrack: ', params
 
@@ -124,7 +126,7 @@ define 'app', ['jquery','underscore','backbone'],
               app.trigger 'list.loaded', data: params, collection: collection
 
           app.collections.push vkSongs
-
+        @
       loadVkTracksList: (params) ->
         app.log 'app: loadVkTracksList: ', params
 
@@ -147,7 +149,7 @@ define 'app', ['jquery','underscore','backbone'],
               app.trigger 'list.loaded', data: params, collection: collection
 
           app.collections.push vkSongs
-
+        @
       loadSimilarTracksList: (params) ->
         app.log 'app: loadSimilarTracksList: ', params
         require ['collections/lastfmSongs'], (LastCollection) ->
@@ -168,7 +170,7 @@ define 'app', ['jquery','underscore','backbone'],
                 app.methods.messages.auto 'red', 'Similar tracks not found.'
 
           app.collections.push(collection);
-
+        @
       loadList: (params) ->
         app.log 'app: loadList: ', params
 
@@ -178,7 +180,7 @@ define 'app', ['jquery','underscore','backbone'],
           when "my", "vk" then app.methods.loadVkTracksList params
           when "lastfm", "search" then app.methods.loadSimilarTracksList params
           else alert 'No spec'
-
+        @
       # Event: list.loaded
       # When List is loaded and data recieved.
       # This function will decide which type of list to load and display by
@@ -192,14 +194,14 @@ define 'app', ['jquery','underscore','backbone'],
           app.views[list.cid] = list
           list.render()
           params.data.$domElement.html('').append(list.$el)
-
+        @
       killList: (cid) ->
         app.log "app: killList: cid: ", cid
         list = app.views[cid]
         list.$el.undelegate()
         list.$el.remove()
         delete app.views[cid]
-
+        @
   return app;
 
 requirejs ['app'], (app) ->

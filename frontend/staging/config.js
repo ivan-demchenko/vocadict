@@ -5,12 +5,12 @@ requirejs.config({
     jquery: 'libs/jquery',
     underscore: 'libs/underscore',
     backbone: 'libs/backbone',
-    soundmanager: 'libs/soundmanager'
+    soundManager: 'libs/soundmanager'
   },
   deps: ["app", "text!templates/track/lastfmTrack.html", "text!templates/track/searchTrack.html", "text!templates/track/vkTrack.html", "text!templates/tracksList/lastfmTracksList.html", "text!templates/tracksList/myTracksList.html"],
   shim: {
-    soundmanager: {
-      exports: "soundmanager"
+    soundManager: {
+      exports: "soundManager"
     },
     underscore: {
       exports: "_"

@@ -1,4 +1,4 @@
-define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
+define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, _, Backbone, SoundMan) {
   var app;
 
   app = _.extend({}, Backbone.Events);
@@ -115,19 +115,20 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
       },
       playTrack: function(data) {
         app.log('app: playTrack: ', data);
-        app.playerObject = app.playerObject || document.getElementById("mp3-player");
         if (data.url != null) {
-          $("#player small span").text(data.title);
-          app.playerObject.SetVariable("player:jsStop", "");
-          app.playerObject.SetVariable("player:jsUrl", data.url);
-          return app.playerObject.SetVariable("player:jsPlay", "");
+          SoundMan.createSound({
+            id: 'test',
+            url: data.url
+          });
+          SoundMan.play();
         }
+        return this;
       },
       searchTrack: function(params) {
         app.log('app: searchTrack: ', params);
         params.$domElement = $("#search-mp3-list");
         params.listTitle = 'Variants of "' + params.artist + " - " + params.title + '"';
-        return require(['collections/vkSongs'], function(SongsCollection) {
+        require(['collections/vkSongs'], function(SongsCollection) {
           var vkSongs;
 
           vkSongs = new SongsCollection({
@@ -151,12 +152,13 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
           });
           return app.collections.push(vkSongs);
         });
+        return this;
       },
       loadVkTracksList: function(params) {
         app.log('app: loadVkTracksList: ', params);
         params.$domElement = $('#track-lists-wrapper');
         params.listTitle = 'My Tracklist';
-        return require(['collections/vkSongs'], function(SongsCollection) {
+        require(['collections/vkSongs'], function(SongsCollection) {
           var vkSongs;
 
           vkSongs = new SongsCollection({
@@ -183,10 +185,11 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
           });
           return app.collections.push(vkSongs);
         });
+        return this;
       },
       loadSimilarTracksList: function(params) {
         app.log('app: loadSimilarTracksList: ', params);
-        return require(['collections/lastfmSongs'], function(LastCollection) {
+        require(['collections/lastfmSongs'], function(LastCollection) {
           var collection;
 
           collection = new LastCollection();
@@ -212,6 +215,7 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
           });
           return app.collections.push(collection);
         });
+        return this;
       },
       loadList: function(params) {
         app.log('app: loadList: ', params);
@@ -221,17 +225,20 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
         switch (params.type) {
           case "my":
           case "vk":
-            return app.methods.loadVkTracksList(params);
+            app.methods.loadVkTracksList(params);
+            break;
           case "lastfm":
           case "search":
-            return app.methods.loadSimilarTracksList(params);
+            app.methods.loadSimilarTracksList(params);
+            break;
           default:
-            return alert('No spec');
+            alert('No spec');
         }
+        return this;
       },
       showTrackList: function(params) {
         app.log('app: showTrackList: params: ', params);
-        return require(['views/tracksList/' + params.data.type + 'TracksList'], function(ListView) {
+        require(['views/tracksList/' + params.data.type + 'TracksList'], function(ListView) {
           var list;
 
           list = new ListView(params);
@@ -239,6 +246,7 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
           list.render();
           return params.data.$domElement.html('').append(list.$el);
         });
+        return this;
       },
       killList: function(cid) {
         var list;
@@ -247,7 +255,8 @@ define('app', ['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
         list = app.views[cid];
         list.$el.undelegate();
         list.$el.remove();
-        return delete app.views[cid];
+        delete app.views[cid];
+        return this;
       }
     }
   });
