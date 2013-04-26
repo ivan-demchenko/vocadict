@@ -23,6 +23,11 @@ button:hover {
   width: 100%;
   top: 0;
 }
+#app-header #player {
+  left: 121px;
+  right: 498px;
+  top: 7px;
+}
 #logo {
   color: #5fd4b1;
   float: left;
@@ -36,14 +41,7 @@ button:hover {
   text-decoration: none;
 }
 #player {
-  padding: 0 10px;
-  float: left;
-  line-height: 1;
-  width: 500px;
-  margin-top: 7px;
-}
-#player #mp3-player {
-  margin-top: 7px;
+  position: absolute;
 }
 .msg {
   padding: 5px 10px;
@@ -93,17 +91,17 @@ button:hover {
   position: relative;
 }
 .tracks-list header {
-  background: #ff5900;
+  background: #00b74a;
   color: #fff;
   font-weight: bold;
   font-size: 15px;
   padding: 2px 5px;
   position: relative;
-  -webkit-text-shadow: 1px 1px 0px #a62000;
-  -moz-text-shadow: 1px 1px 0px #a62000;
-  -ms-text-shadow: 1px 1px 0px #a62000;
-  -o-text-shadow: 1px 1px 0px #a62000;
-  text-shadow: 1px 1px 0px #a62000;
+  -webkit-text-shadow: 1px 1px 0px #007730;
+  -moz-text-shadow: 1px 1px 0px #007730;
+  -ms-text-shadow: 1px 1px 0px #007730;
+  -o-text-shadow: 1px 1px 0px #007730;
+  text-shadow: 1px 1px 0px #007730;
 }
 .tracks-list header .icon-remove {
   cursor: pointer;
@@ -115,6 +113,9 @@ button:hover {
 }
 .tracks-list .item {
   border-bottom: solid 1px #ccc;
+}
+.tracks-list .item.active {
+  background: #dbdbdb;
 }
 .tracks-list .item .track-line a {
   margin-left: 4px;
@@ -131,35 +132,39 @@ button:hover {
 .tracks-list .item .sub-track {
   padding-left: 30px;
 }
-.tracks-list .item.active {
-  background: #dbdbdb;
-}
 #player-wrapper {
   width: 100%;
-  position: relative;
 }
 #player-wrapper #buttons {
-  width: 30px;
+  width: 22px;
   color: #62b1d0;
+  overflow: hidden;
 }
-#player-wrapper #buttons .icon-play,
-#player-wrapper #buttons .icon-pause {
+#player-wrapper #btn-set {
+  -webkit-transition: 0.4s;
+  -moz-transition: 0.4s;
+  -ms-transition: 0.4s;
+  -o-transition: 0.4s;
+  transition: 0.4s;
+  margin-left: 0;
+  width: 44px;
+}
+#player-wrapper #btn-set .icon-play,
+#player-wrapper #btn-set .icon-pause {
   cursor: pointer;
   font-size: 25px;
+  width: 22px;
+  display: inline-block;
 }
-#player-wrapper #buttons .icon-play:hover,
-#player-wrapper #buttons .icon-pause:hover {
+#player-wrapper #btn-set .icon-play:hover,
+#player-wrapper #btn-set .icon-pause:hover {
   color: #37db79;
 }
-#player-wrapper.playing .icon-play {
-  display: none;
-}
-#player-wrapper.paused .icon-pause {
-  display: none;
+#player-wrapper.playing #btn-set {
+  margin-left: -22px;
 }
 #player-wrapper #now-playing,
 #player-wrapper #progress {
-  position: absolute;
   left: 30px;
   right: 0;
 }
@@ -173,40 +178,35 @@ button:hover {
   text-shadow: 1px 1px 0px #024c68;
 }
 #player-wrapper #now-playing #label {
-  position: absolute;
   white-space: nowrap;
   overflow: hidden;
   left: 0;
-  right: 50px;
+  right: 100px;
 }
 #player-wrapper #now-playing #time {
-  position: absolute;
   right: 0;
-  width: 40px;
+  width: 90px;
+  padding-right: 10px;
+  text-align: right;
 }
 #player-wrapper #progress {
-  position: absolute;
   top: 18px;
 }
 #player-wrapper #progress #load-progress,
 #player-wrapper #progress #play-progress {
   height: 1px;
   left: 0;
-  position: absolute;
   top: 3px;
 }
 #player-wrapper #progress #load-progress {
   background: #3aa6d0;
-  width: 75%;
 }
 #player-wrapper #progress #play-progress {
   background: #63db93;
-  width: 35%;
 }
 #player-wrapper #progress #tick {
   background: #62b1d0;
   display: inline-block;
-  position: absolute;
   left: 0;
   width: 6px;
   height: 6px;

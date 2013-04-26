@@ -20,6 +20,11 @@ button
   width 100%
   top 0
 
+  #player
+    left 121px
+    right 498px
+    top 7px
+
 #logo
   color #5FD4B1
   float left
@@ -33,14 +38,7 @@ button
   text-decoration none
 
 #player
-  padding 0 10px
-  float left
-  line-height 1
-  width 500px
-  margin-top 7px
-
-  #mp3-player
-    margin-top 7px
+  position absolute
 
 .msg
   padding 5px 10px
@@ -80,40 +78,3 @@ button
   top 40px
   bottom 0
   border-right solid 1px #ccc
-
-.tracks-list
-  font-size 12px
-  position relative
-
-  header
-    background #FF5900
-    color #fff
-    font-weight bold
-    font-size 15px
-    padding 2px 5px
-    position relative
-    multiprop(text-shadow, 1px 1px 0px #A62000)
-
-    .icon-remove
-      cursor pointer
-      display block
-      font-style normal
-      position absolute
-      top 4px
-      right 4px
-
-  .item
-    border-bottom solid 1px #ccc
-
-    .track-line
-      a
-        margin-left 4px
-        &:hover
-          text-decoration none
-      span
-        margin 4px 0 0 4px
-      &:hover
-        background #f0f0f0
-
-    .sub-track
-      padding-left 30px

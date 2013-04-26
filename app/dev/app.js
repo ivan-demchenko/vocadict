@@ -12026,7 +12026,7 @@ define('text!templates/search/form.html',[],function () { return '\n<input type=
 
 define('text!templates/layout.html',[],function () { return '\n<header id="app-header" class="flt-l pos-f"><a id="logo" href="/">Vocadict</a>\n  <div id="player"></div>\n</header>\n<div id="messages" class="msg"></div>\n<div id="app-body" class="flt-l w100 pos-r">\n  <div id="track-lists-wrapper" class="pos-f scrl"></div>\n  <div id="search-mp3-list" class="pos-f scrl"></div>\n</div>';});
 
-define('text!templates/player/player.html',[],function () { return '\n<div id="player-wrapper" class="clearfix playing">\n  <div id="buttons" class="flt-l"><i class="icon-play"></i><i class="icon-pause"></i></div>\n  <div id="now-playing">\n    <div id="label">Erick Klapton - Embarsa deer Sdw Dsdqww sdsds</div>\n    <div id="time">01:23</div>\n  </div>\n  <div id="progress">\n    <div id="load-progress"></div>\n    <div id="play-progress"></div>\n    <div id="tick"></div>\n  </div>\n</div>';});
+define('text!templates/player/player.html',[],function () { return '\n<div id="player-wrapper" class="clearfix pos-r">\n  <div id="buttons" class="flt-l">\n    <div id="btn-set"><i class="icon-play"></i><i class="icon-pause"></i></div>\n  </div>\n  <div id="now-playing" class="pos-a">\n    <div id="label" class="pos-a">Waiting for track...</div>\n    <div id="time" class="pos-a">00:00</div>\n  </div>\n  <div id="progress" class="pos-a">\n    <div id="load-progress" class="pos-a"></div>\n    <div id="play-progress" class="pos-a"></div>\n    <div id="tick" class="pos-a"></div>\n  </div>\n</div>';});
 
 define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, _, Backbone, SoundMan) {
   var app;
@@ -12111,8 +12111,7 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
               app.player.man = SoundMan;
             }
             return require(['views/player/playerView'], function(PlayerView) {
-              app.views.player = new PlayerView();
-              return app.views.player.render();
+              return app.views.player = new PlayerView();
             });
           }
         });
@@ -12170,9 +12169,16 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
             id: 'test',
             url: data.url,
             autoLoad: true,
-            autoPlay: true
+            autoPlay: true,
+            whileloading: function() {
+              return app.views.player.setLoadData(this);
+            },
+            whileplaying: function() {
+              return app.views.player.setPlayingProgress(this);
+            }
           });
           app.player.currSong.play();
+          app.views.player.startedPlaying(data);
         }
         return this;
       },
@@ -12423,24 +12429,46 @@ define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 't
     el: $("#app-header #player"),
     template: _.template(html),
     events: {
-      '#play-song click': 'playSong',
-      '#stop-song click': 'stopSong'
+      'click .icon-play': 'playSong',
+      'click .icon-pause': 'pauseSong'
     },
     initialize: function() {
-      this.$el.attr('class', 'flt-l');
-      return _.bindAll(this, 'render');
-    },
-    render: function(data) {
-      return $(this.el).html(this.template(data));
+      _.bindAll(this, 'render', 'playSong', 'pauseSong');
+      $(this.el).html(this.template);
+      this.wrapper = this.$el.find('#player-wrapper');
+      this.titleLabel = this.$el.find('#player-wrapper #label');
+      this.timeLabel = this.$el.find('#player-wrapper #time');
+      this.loadingProgress = this.$el.find('#player-wrapper #load-progress');
+      this.playingProgress = this.$el.find('#player-wrapper #play-progress');
+      return this.tick = this.$el.find('#player-wrapper #tick');
     },
     playSong: function() {
+      this.wrapper.addClass('playing');
       return app.player.currSong.play();
     },
-    stopSong: function() {
-      return app.player.currSong.stop();
+    pauseSong: function() {
+      this.wrapper.removeClass('playing');
+      return app.player.currSong.pause();
     },
-    playFromURL: function(URL) {
-      return $(this.el).find("audio#player source").attr('src', URL);
+    startedPlaying: function(data) {
+      this.titleLabel.text(data.title);
+      return this.wrapper.addClass('playing');
+    },
+    setLoadData: function(data) {
+      var loadProgress, minutes, seconds;
+
+      seconds = Math.floor((data.durationEstimate / 1000) % 60);
+      minutes = Math.floor((data.durationEstimate / (60 * 1000)) % 60);
+      loadProgress = Math.floor((data.bytesLoaded * 100) / data.bytesTotal);
+      this.timeLabel.text(minutes + ':' + seconds);
+      return this.loadingProgress.css('width', loadProgress + '%');
+    },
+    setPlayingProgress: function(data) {
+      var playProgress;
+
+      playProgress = Math.floor(data.position / data.duration * 100);
+      this.playingProgress.css('width', playProgress + '%');
+      return this.tick.css('left', playProgress + '%');
     }
   });
 });
@@ -12603,7 +12631,7 @@ define('views/track/vkTrack', ['jquery', 'underscore', 'backbone', 'app', 'text!
     },
     events: {
       'click a': 'selectMe',
-      'click .icon-play': 'playTrack'
+      'click .start-play': 'playTrack'
     },
     selectMe: function(e) {
       e.preventDefault();
@@ -12756,7 +12784,7 @@ define('text!templates/track/lastfmTrack.html',[],function () { return '\n<div d
 
 define('text!templates/track/searchTrack.html',[],function () { return '\n<div data-type="search" class="track-line">\n  <button><i class="icon-play"></i></button>\n  <button><i class="icon-heart"></i></button><span><% if (typeof(artist) === \'string\') { %><strong><%= artist %></strong><% } %>\n    <% if (typeof(artist) === \'object\') { %><strong><%= artist.name %></strong><% } %>\n    <% if (typeof(title) !== \'undefined\') { %><span>- <%= title %></span><% } %>\n    <% if (typeof(name) !== \'undefined\') { %><span>- <%= name %></span><% } %></span>\n</div>';});
 
-define('text!templates/track/vkTrack.html',[],function () { return '\n<div data-type="vk" class="track-line">\n  <button><i class="icon-play"></i></button><a href="#"><strong><%= artist %></strong><span>- <%= title %></span></a>\n</div>\n<div class="sub-track"></div>';});
+define('text!templates/track/vkTrack.html',[],function () { return '\n<div data-type="vk" class="track-line">\n  <button class="start-play"><i class="icon-play"></i></button><a href="#"><strong><%= artist %></strong><span>- <%= title %></span></a>\n</div>\n<div class="sub-track"></div>';});
 
 define('text!templates/tracksList/lastfmTracksList.html',[],function () { return '\n<header><span><%= listTitle %></span><i class="icon-remove"></i></header>\n<div></div>';});
 

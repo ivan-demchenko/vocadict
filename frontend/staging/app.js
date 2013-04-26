@@ -81,8 +81,7 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
               app.player.man = SoundMan;
             }
             return require(['views/player/playerView'], function(PlayerView) {
-              app.views.player = new PlayerView();
-              return app.views.player.render();
+              return app.views.player = new PlayerView();
             });
           }
         });
@@ -140,9 +139,16 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
             id: 'test',
             url: data.url,
             autoLoad: true,
-            autoPlay: true
+            autoPlay: true,
+            whileloading: function() {
+              return app.views.player.setLoadData(this);
+            },
+            whileplaying: function() {
+              return app.views.player.setPlayingProgress(this);
+            }
           });
           app.player.currSong.play();
+          app.views.player.startedPlaying(data);
         }
         return this;
       },
@@ -393,24 +399,46 @@ define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 't
     el: $("#app-header #player"),
     template: _.template(html),
     events: {
-      '#play-song click': 'playSong',
-      '#stop-song click': 'stopSong'
+      'click .icon-play': 'playSong',
+      'click .icon-pause': 'pauseSong'
     },
     initialize: function() {
-      this.$el.attr('class', 'flt-l');
-      return _.bindAll(this, 'render');
-    },
-    render: function(data) {
-      return $(this.el).html(this.template(data));
+      _.bindAll(this, 'render', 'playSong', 'pauseSong');
+      $(this.el).html(this.template);
+      this.wrapper = this.$el.find('#player-wrapper');
+      this.titleLabel = this.$el.find('#player-wrapper #label');
+      this.timeLabel = this.$el.find('#player-wrapper #time');
+      this.loadingProgress = this.$el.find('#player-wrapper #load-progress');
+      this.playingProgress = this.$el.find('#player-wrapper #play-progress');
+      return this.tick = this.$el.find('#player-wrapper #tick');
     },
     playSong: function() {
+      this.wrapper.addClass('playing');
       return app.player.currSong.play();
     },
-    stopSong: function() {
-      return app.player.currSong.stop();
+    pauseSong: function() {
+      this.wrapper.removeClass('playing');
+      return app.player.currSong.pause();
     },
-    playFromURL: function(URL) {
-      return $(this.el).find("audio#player source").attr('src', URL);
+    startedPlaying: function(data) {
+      this.titleLabel.text(data.title);
+      return this.wrapper.addClass('playing');
+    },
+    setLoadData: function(data) {
+      var loadProgress, minutes, seconds;
+
+      seconds = Math.floor((data.durationEstimate / 1000) % 60);
+      minutes = Math.floor((data.durationEstimate / (60 * 1000)) % 60);
+      loadProgress = Math.floor((data.bytesLoaded * 100) / data.bytesTotal);
+      this.timeLabel.text(minutes + ':' + seconds);
+      return this.loadingProgress.css('width', loadProgress + '%');
+    },
+    setPlayingProgress: function(data) {
+      var playProgress;
+
+      playProgress = Math.floor(data.position / data.duration * 100);
+      this.playingProgress.css('width', playProgress + '%');
+      return this.tick.css('left', playProgress + '%');
     }
   });
 });
@@ -573,7 +601,7 @@ define('views/track/vkTrack', ['jquery', 'underscore', 'backbone', 'app', 'text!
     },
     events: {
       'click a': 'selectMe',
-      'click .icon-play': 'playTrack'
+      'click .start-play': 'playTrack'
     },
     selectMe: function(e) {
       e.preventDefault();

@@ -68,7 +68,6 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
             app.player.man = SoundMan if app.player.man is null
             require ['views/player/playerView'], (PlayerView) ->
               app.views.player = new PlayerView()
-              app.views.player.render()
 
     authVK: ->
       VkAuth = require ['models/vkAuth']
@@ -116,8 +115,14 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
             url: data.url
             autoLoad: true
             autoPlay: true
+            whileloading: ->
+              app.views.player.setLoadData @
+            whileplaying: ->
+              app.views.player.setPlayingProgress @
 
           app.player.currSong.play()
+          app.views.player.startedPlaying(data)
+
         @
       searchTrack: (params) ->
         app.log 'app: searchTrack: ', params

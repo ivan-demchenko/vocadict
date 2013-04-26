@@ -1,0 +1,44 @@
+@import "defaults"
+
+.tracks-list
+  font-size 12px
+  position relative
+
+  header
+    background #00B74A
+    color #fff
+    font-weight bold
+    font-size 15px
+    padding 2px 5px
+    position relative
+    multiprop(text-shadow, 1px 1px 0px #007730)
+
+    .icon-remove
+      cursor pointer
+      display block
+      font-style normal
+      position absolute
+      top 4px
+      right 4px
+
+  .item
+    border-bottom solid 1px #ccc
+
+    &.active
+      background rgb(219, 219, 219)
+
+    .track-line
+      a
+        margin-left 4px
+
+        &:hover
+          text-decoration none
+
+      span
+        margin 4px 0 0 4px
+
+      &:hover
+        background #f0f0f0
+
+    .sub-track
+      padding-left 30px

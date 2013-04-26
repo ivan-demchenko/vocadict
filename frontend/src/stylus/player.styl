@@ -2,28 +2,31 @@
 
 #player-wrapper
   width 100%
-  position relative
 
   #buttons
-    width 30px
+    width 22px
     color #62B1D0
+    overflow hidden
+
+  #btn-set
+    multiprop(transition, .4s)
+    margin-left 0
+    width 44px
 
     .icon-play, .icon-pause
       cursor pointer
       font-size 25px
+      width 22px
+      display inline-block
+
       &:hover
         color #37DB79
 
   &.playing
-    .icon-play
-      display none
-
-  &.paused
-    .icon-pause
-      display none
+    #btn-set
+      margin-left -22px
 
   #now-playing, #progress
-    position absolute
     left 30px
     right 0
 
@@ -35,41 +38,34 @@
     multiprop(text-shadow, 1px 1px 0px #024C68)
 
     #label
-      position absolute
       white-space nowrap
       overflow hidden
       left 0
-      right 50px
+      right 100px
 
     #time
-      position absolute
       right 0
-      width 40px
-
-
+      width 90px
+      padding-right 10px
+      text-align right
 
   #progress
-    position absolute
     top 18px
 
     #load-progress, #play-progress
       height 1px
       left 0
-      position absolute
       top 3px
 
     #load-progress
       background #3AA6D0
-      width 75%
 
     #play-progress
       background #63DB93
-      width 35%
 
     #tick
       background #62B1D0
       display inline-block
-      position absolute
       left 0
       width 6px
       height 6px

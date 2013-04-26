@@ -11,9 +11,9 @@ define 'views/track/vkTrack',
 
     events:
       'click a': 'selectMe'
-      'click .icon-play': 'playTrack'
+      'click .start-play': 'playTrack'
 
-    selectMe: (e)->
+    selectMe: (e) ->
       e.preventDefault()
       e.stopPropagation()
 
@@ -26,7 +26,7 @@ define 'views/track/vkTrack',
         title: app.methods.decodeStr this.model.get 'title'
         listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
 
-    playTrack: (e)->
+    playTrack: (e) ->
       e.preventDefault()
       e.stopPropagation()
 
