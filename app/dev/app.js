@@ -12024,9 +12024,9 @@ define('text',['module'], function (module) {
 
 define('text!templates/search/form.html',[],function () { return '\n<input type="text" id="search-artist" placeholder="Artist or Band..."/>\n<input type="text" id="search-title" placeholder="Track title..."/>\n<button type="submit" id="go-search">Go</button>';});
 
-define('text!templates/layout.html',[],function () { return '\n<header id="app-header" class="silver-step-gradient flt-l pos-f"><a id="logo" href="/">Vocadict</a>\n  <div id="player"></div>\n</header>\n<div id="messages" class="msg"></div>\n<div id="app-body" class="flt-l w100 pos-r">\n  <div id="track-lists-wrapper" class="pos-f scrl"></div>\n  <div id="search-mp3-list" class="pos-f scrl"></div>\n</div>';});
+define('text!templates/layout.html',[],function () { return '\n<header id="app-header" class="flt-l pos-f"><a id="logo" href="/">Vocadict</a>\n  <div id="player"></div>\n</header>\n<div id="messages" class="msg"></div>\n<div id="app-body" class="flt-l w100 pos-r">\n  <div id="track-lists-wrapper" class="pos-f scrl"></div>\n  <div id="search-mp3-list" class="pos-f scrl"></div>\n</div>';});
 
-define('text!templates/player/player.html',[],function () { return '\n<div id="player-wrapper">\n  <button id="play-song" class="small">play</button>\n  <button id="stop-song" class="small">stop</button>\n</div>';});
+define('text!templates/player/player.html',[],function () { return '\n<div id="player-wrapper" class="clearfix playing">\n  <div id="buttons" class="flt-l"><i class="icon-play"></i><i class="icon-pause"></i></div>\n  <div id="now-playing">\n    <div id="label">Erick Klapton - Embarsa deer Sdw Dsdqww sdsds</div>\n    <div id="time">01:23</div>\n  </div>\n  <div id="progress">\n    <div id="load-progress"></div>\n    <div id="play-progress"></div>\n    <div id="tick"></div>\n  </div>\n</div>';});
 
 define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, _, Backbone, SoundMan) {
   var app;
@@ -12131,15 +12131,17 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
       messages: {
         timer: null,
         show: function(type, text) {
-          return $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible');
+          return setTimeout(function() {
+            return $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible');
+          }, 0);
         },
         hide: function() {
           if (app.methods.messages.timer != null) {
             clearTimeout(app.methods.messages.timer);
           }
           return app.methods.messages.timer = setTimeout(function() {
-            return $("#messages").removeClass('visible', 1000);
-          });
+            return $("#messages").removeClass('visible');
+          }, 1000);
         },
         auto: function(type, text) {
           app.methods.messages.show(type, text);
@@ -12493,7 +12495,7 @@ define('views/track/lastfmTrack', ['jquery', 'underscore', 'backbone', 'app', 't
     events: {
       'click a': 'selectMe',
       'click header': 'reloadMe',
-      'click .icon-search': 'searchTrack'
+      'click button.search': 'searchTrack'
     },
     selectMe: function(e) {
       e.preventDefault();
@@ -12750,11 +12752,11 @@ define('views/tracksList/searchTracksList', ['jquery', 'underscore', 'backbone',
   });
 });
 
-define('text!templates/track/lastfmTrack.html',[],function () { return '\n<div data-type="lastFM" class="track-line">\n  <button class="icon-search"></button><a href="#"><strong><%= artist.name %></strong><span>- <%= name %></span></a>\n</div>\n<div class="sub-track"></div>';});
+define('text!templates/track/lastfmTrack.html',[],function () { return '\n<div data-type="lastFM" class="track-line">\n  <button class="search"><i class="icon-search"></i></button><a href="#"><strong><%= artist.name %></strong><span>- <%= name %></span></a>\n</div>\n<div class="sub-track"></div>';});
 
-define('text!templates/track/searchTrack.html',[],function () { return '\n<div data-type="search" class="track-line">\n  <button class="icon-play flt-l"></button>\n  <button class="icon-heart flt-l"></button><span><% if (typeof(artist) === \'string\') { %><strong><%= artist %></strong><% } %>\n    <% if (typeof(artist) === \'object\') { %><strong><%= artist.name %></strong><% } %>\n    <% if (typeof(title) !== \'undefined\') { %><span>- <%= title %></span><% } %>\n    <% if (typeof(name) !== \'undefined\') { %><span>- <%= name %></span><% } %></span>\n</div>';});
+define('text!templates/track/searchTrack.html',[],function () { return '\n<div data-type="search" class="track-line">\n  <button><i class="icon-play"></i></button>\n  <button><i class="icon-heart"></i></button><span><% if (typeof(artist) === \'string\') { %><strong><%= artist %></strong><% } %>\n    <% if (typeof(artist) === \'object\') { %><strong><%= artist.name %></strong><% } %>\n    <% if (typeof(title) !== \'undefined\') { %><span>- <%= title %></span><% } %>\n    <% if (typeof(name) !== \'undefined\') { %><span>- <%= name %></span><% } %></span>\n</div>';});
 
-define('text!templates/track/vkTrack.html',[],function () { return '\n<div data-type="vk" class="track-line">\n  <button class="icon-play"></button><a href="#"><strong><%= artist %></strong><span>- <%= title %></span></a>\n</div>\n<div class="sub-track"></div>';});
+define('text!templates/track/vkTrack.html',[],function () { return '\n<div data-type="vk" class="track-line">\n  <button><i class="icon-play"></i></button><a href="#"><strong><%= artist %></strong><span>- <%= title %></span></a>\n</div>\n<div class="sub-track"></div>';});
 
 define('text!templates/tracksList/lastfmTracksList.html',[],function () { return '\n<header><span><%= listTitle %></span><i class="icon-remove"></i></header>\n<div></div>';});
 

@@ -12,7 +12,7 @@ define 'views/track/lastfmTrack',
     events:
       'click a': 'selectMe'
       'click header': 'reloadMe'
-      'click .icon-search': 'searchTrack'
+      'click button.search': 'searchTrack'
 
     selectMe: (e) ->
       e.preventDefault();

@@ -1,10 +1,12 @@
 @import "../vendor/cssframework/full.css";
 body {
+  font-family: 'Quicksand', Tahoma, Arial, sans-serif;
   background: #f2f2f2;
-  padding-top: 43px;
+  padding-top: 40px;
 }
 button {
   color: #fff;
+  width: 30px;
   -webkit-transition: 0.3s;
   -moz-transition: 0.3s;
   -ms-transition: 0.3s;
@@ -12,55 +14,61 @@ button {
   transition: 0.3s;
 }
 button:hover {
-  background: #4096ee;
-  border-color: #4096ee;
+  background: #00a876;
+  border-color: #00a876;
 }
 #app-header {
-  border-bottom: solid 1px #ccc;
-  box-shadow: 0 0 9px #000;
+  background: #0776a0;
   z-index: 3;
   width: 100%;
   top: 0;
 }
 #logo {
-  color: #fed457;
+  color: #5fd4b1;
   float: left;
   font-size: 20px;
   font-weight: bold;
-  padding: 10px 15px;
+  padding: 10px 12px;
 }
 #logo:hover {
-  text-shadow: 0 0 3px #999;
+  color: #fff;
+  text-shadow: 0 0 3px #62b1d0;
   text-decoration: none;
 }
 #player {
   padding: 0 10px;
   float: left;
   line-height: 1;
+  width: 500px;
+  margin-top: 7px;
 }
 #player #mp3-player {
   margin-top: 7px;
 }
 .msg {
-  padding: 0;
+  padding: 5px 10px;
   opacity: 0;
   width: 100%;
   position: fixed;
-  top: 40px;
+  top: 0px;
   z-index: 2;
   -webkit-transition: 0.3s;
   -moz-transition: 0.3s;
   -ms-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s;
-  box-shadow: 0 0 5px #444;
 }
 .msg.visible {
+  top: 40px;
   opacity: 1;
-  padding: 5px 10px;
+}
+.msg.blue {
+  background: #3aa6d0;
+  color: #fff;
 }
 .msg.red {
-  border-bottom: solid 1px #f00;
+  background: #ff3100;
+  color: #fff;
 }
 #search-box {
   padding: 6px 10px 0 0;
@@ -81,71 +89,139 @@ button:hover {
   border-right: solid 1px #ccc;
 }
 .tracks-list {
-  font-size: 11px;
+  font-size: 12px;
   position: relative;
 }
 .tracks-list header {
-  background: #cb252a;
+  background: #ff5900;
   color: #fff;
+  font-weight: bold;
   font-size: 15px;
   padding: 2px 5px;
   position: relative;
+  -webkit-text-shadow: 1px 1px 0px #a62000;
+  -moz-text-shadow: 1px 1px 0px #a62000;
+  -ms-text-shadow: 1px 1px 0px #a62000;
+  -o-text-shadow: 1px 1px 0px #a62000;
+  text-shadow: 1px 1px 0px #a62000;
 }
 .tracks-list header .icon-remove {
   cursor: pointer;
   display: block;
   font-style: normal;
   position: absolute;
-  top: 3px;
-  right: 2px;
+  top: 4px;
+  right: 4px;
 }
 .tracks-list .item {
   border-bottom: solid 1px #ccc;
 }
+.tracks-list .item .track-line a {
+  margin-left: 4px;
+}
+.tracks-list .item .track-line a:hover {
+  text-decoration: none;
+}
 .tracks-list .item .track-line span {
   margin: 4px 0 0 4px;
+}
+.tracks-list .item .track-line:hover {
+  background: #f0f0f0;
 }
 .tracks-list .item .sub-track {
   padding-left: 30px;
 }
-.silver-step-gradient {
-  background: #fafafa;
-  background: -moz-linear-gradient(top, #fafafa 0%, #e0e0e0 50%, #d1d1d1 51%, #d1d1d1 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(50%, #e0e0e0), color-stop(51%, #d1d1d1), color-stop(100%, #d1d1d1));
-  background: -webkit-linear-gradient(top, #fafafa 0%, #e0e0e0 50%, #d1d1d1 51%, #d1d1d1 100%);
-  background: -o-linear-gradient(top, #fafafa 0%, #e0e0e0 50%, #d1d1d1 51%, #d1d1d1 100%);
-  background: -ms-linear-gradient(top, #fafafa 0%, #e0e0e0 50%, #d1d1d1 51%, #d1d1d1 100%);
-  background: linear-gradient(#d1d1d1 bottom, #fafafa 0%, #e0e0e0 50%, #d1d1d1 51%, #d1d1d1 100%);
-}
-.red-step-gradient,
-.msg.red {
-  background: #ff1a00;
-  background: -moz-linear-gradient(top, #ff1a00 0%, #ff897c 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff1a00), color-stop(100%, #ff897c));
-  background: -webkit-linear-gradient(top, #ff1a00 0%, #ff897c 100%);
-  background: -o-linear-gradient(top, #ff1a00 0%, #ff897c 100%);
-  background: -ms-linear-gradient(top, #ff1a00 0%, #ff897c 100%);
-  background: linear-gradient(#ff897c bottom, #ff1a00 0%, #ff897c 100%);
-  color: #fff;
-  text-shadow: 1px 1px 0 #a00;
-}
-.blue-step-gradient,
-.msg.blue {
-  background: #e0f3fa;
-  background: -moz-linear-gradient(top, #e0f3fa 0%, #b6dffd 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e0f3fa), color-stop(100%, #b6dffd));
-  background: -webkit-linear-gradient(top, #e0f3fa 0%, #b6dffd 100%);
-  background: -o-linear-gradient(top, #e0f3fa 0%, #b6dffd 100%);
-  background: -ms-linear-gradient(top, #e0f3fa 0%, #b6dffd 100%);
-  background: linear-gradient(#b6dffd bottom, #e0f3fa 0%, #b6dffd 100%);
-  text-shadow: 1px 1px 0px #fff;
-}
-#logo {
-  color: #444;
-}
-button {
-  width: 30px;
-}
 .tracks-list .item.active {
   background: #dbdbdb;
+}
+#player-wrapper {
+  width: 100%;
+  position: relative;
+}
+#player-wrapper #buttons {
+  width: 30px;
+  color: #62b1d0;
+}
+#player-wrapper #buttons .icon-play,
+#player-wrapper #buttons .icon-pause {
+  cursor: pointer;
+  font-size: 25px;
+}
+#player-wrapper #buttons .icon-play:hover,
+#player-wrapper #buttons .icon-pause:hover {
+  color: #37db79;
+}
+#player-wrapper.playing .icon-play {
+  display: none;
+}
+#player-wrapper.paused .icon-pause {
+  display: none;
+}
+#player-wrapper #now-playing,
+#player-wrapper #progress {
+  position: absolute;
+  left: 30px;
+  right: 0;
+}
+#player-wrapper #now-playing {
+  top: 0;
+  color: #fff;
+  -webkit-text-shadow: 1px 1px 0px #024c68;
+  -moz-text-shadow: 1px 1px 0px #024c68;
+  -ms-text-shadow: 1px 1px 0px #024c68;
+  -o-text-shadow: 1px 1px 0px #024c68;
+  text-shadow: 1px 1px 0px #024c68;
+}
+#player-wrapper #now-playing #label {
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  left: 0;
+  right: 50px;
+}
+#player-wrapper #now-playing #time {
+  position: absolute;
+  right: 0;
+  width: 40px;
+}
+#player-wrapper #progress {
+  position: absolute;
+  top: 18px;
+}
+#player-wrapper #progress #load-progress,
+#player-wrapper #progress #play-progress {
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 3px;
+}
+#player-wrapper #progress #load-progress {
+  background: #3aa6d0;
+  width: 75%;
+}
+#player-wrapper #progress #play-progress {
+  background: #63db93;
+  width: 35%;
+}
+#player-wrapper #progress #tick {
+  background: #62b1d0;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  cursor: pointer;
+}
+#player-wrapper #progress #tick:hover {
+  background: #fff;
 }

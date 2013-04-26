@@ -1,0 +1,81 @@
+@import "defaults"
+
+#player-wrapper
+  width 100%
+  position relative
+
+  #buttons
+    width 30px
+    color #62B1D0
+
+    .icon-play, .icon-pause
+      cursor pointer
+      font-size 25px
+      &:hover
+        color #37DB79
+
+  &.playing
+    .icon-play
+      display none
+
+  &.paused
+    .icon-pause
+      display none
+
+  #now-playing, #progress
+    position absolute
+    left 30px
+    right 0
+
+
+
+  #now-playing
+    top 0
+    color #fff
+    multiprop(text-shadow, 1px 1px 0px #024C68)
+
+    #label
+      position absolute
+      white-space nowrap
+      overflow hidden
+      left 0
+      right 50px
+
+    #time
+      position absolute
+      right 0
+      width 40px
+
+
+
+  #progress
+    position absolute
+    top 18px
+
+    #load-progress, #play-progress
+      height 1px
+      left 0
+      position absolute
+      top 3px
+
+    #load-progress
+      background #3AA6D0
+      width 75%
+
+    #play-progress
+      background #63DB93
+      width 35%
+
+    #tick
+      background #62B1D0
+      display inline-block
+      position absolute
+      left 0
+      width 6px
+      height 6px
+      multiprop(border-radius, 3px)
+      multiprop(transition, .3s)
+      cursor pointer
+
+      &:hover
+        background #fff

@@ -101,15 +101,17 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
       messages: {
         timer: null,
         show: function(type, text) {
-          return $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible');
+          return setTimeout(function() {
+            return $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible');
+          }, 0);
         },
         hide: function() {
           if (app.methods.messages.timer != null) {
             clearTimeout(app.methods.messages.timer);
           }
           return app.methods.messages.timer = setTimeout(function() {
-            return $("#messages").removeClass('visible', 1000);
-          });
+            return $("#messages").removeClass('visible');
+          }, 1000);
         },
         auto: function(type, text) {
           app.methods.messages.show(type, text);
@@ -463,7 +465,7 @@ define('views/track/lastfmTrack', ['jquery', 'underscore', 'backbone', 'app', 't
     events: {
       'click a': 'selectMe',
       'click header': 'reloadMe',
-      'click .icon-search': 'searchTrack'
+      'click button.search': 'searchTrack'
     },
     selectMe: function(e) {
       e.preventDefault();

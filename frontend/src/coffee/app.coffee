@@ -76,19 +76,21 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
 
     methods:
       decodeStr: (encodedStr) ->
-        return $("<div/>").html(encodedStr).text()
+        $("<div/>").html(encodedStr).text()
 
       messages:
         timer: null
         show: (type, text) ->
-          $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible');
+          setTimeout ->
+            $("#messages").html(text).attr('class', 'msg ' + type).addClass('visible')
+          , 0
 
         hide: ->
           clearTimeout app.methods.messages.timer if app.methods.messages.timer?
 
           app.methods.messages.timer = setTimeout ->
             $("#messages").removeClass 'visible'
-            , 1000
+          , 1000
 
         auto: (type, text) ->
           app.methods.messages.show type, text
@@ -106,11 +108,9 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
 
       playTrack: (data) ->
         app.log 'app: playTrack: ', data
-        # app.playerObject = app.playerObject || document.getElementById "mp3-player"
 
         if data.url?
           app.player.currSong.destruct() if app.player.currSong isnt null
-
           app.player.currSong = app.player.man.createSound
             id: 'test'
             url: data.url
@@ -118,10 +118,6 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
             autoPlay: true
 
           app.player.currSong.play()
-          #$("#player small span").text data.title
-          #app.playerObject.SetVariable "player:jsStop", ""
-          #app.playerObject.SetVariable "player:jsUrl", data.url
-          #app.playerObject.SetVariable "player:jsPlay", ""
         @
       searchTrack: (params) ->
         app.log 'app: searchTrack: ', params

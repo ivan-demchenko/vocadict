@@ -1,7 +1,7 @@
 
 <div data-type="search" class="track-line">
-  <button class="icon-play flt-l"></button>
-  <button class="icon-heart flt-l"></button><span><% if (typeof(artist) === 'string') { %><strong><%= artist %></strong><% } %>
+  <button><i class="icon-play"></i></button>
+  <button><i class="icon-heart"></i></button><span><% if (typeof(artist) === 'string') { %><strong><%= artist %></strong><% } %>
     <% if (typeof(artist) === 'object') { %><strong><%= artist.name %></strong><% } %>
     <% if (typeof(title) !== 'undefined') { %><span>- <%= title %></span><% } %>
     <% if (typeof(name) !== 'undefined') { %><span>- <%= name %></span><% } %></span>
