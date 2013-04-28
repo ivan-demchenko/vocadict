@@ -1,0 +1,16 @@
+extends proto
+
+
+block buttons
+  button.start-play.flt-l
+    i.icon-play
+
+
+block labels
+  a.disp-ib(href="#")
+    strong <%= artist %>
+    span - <%= title %>
+
+
+block subs
+  small#duration.flt-r <%= durationStr %>

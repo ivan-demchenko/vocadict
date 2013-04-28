@@ -1,14 +1,20 @@
 # Vocadict
 
-Search for a similar music using your playlist in Vkontakte (vk.com) and
-LastFm.
+Search for a similar music using your playlist in Vkontakte (vk.com) and LastFm.
 
-TODO:
-- Vk
-  1. Error parser of "Illegal token" msg
+## Libs and tools being used
 
-- Track List
-  1. Add "Stick" button, that prevents lits from deleting
+* [NodeJS](http://nodejs.org/) and [ExpressJS](http://expressjs.com/)
+* [BackboneJS](http://backbonejs.org/), [UndescoreJS](http://underscorejs.org/), [RequireJS](http://requirejs.org/)
+* [Grunt](http://gruntjs.com/),
+* [Bower](http://bower.io/),
+* [SoundManager2](http://www.schillmania.com/projects/soundmanager2/),
+* [Normalize.css](http://necolas.github.io/normalize.css/)
+* [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
 
-- Player
-  1. Add button "Save track" for adding current track from player in header.
+## TODO:
+
+* Landing page
+* Error parser of "Illegal token" msg from VK\
+* Add button "Save track" for adding current track from player in header.
+* Implement SoundManager2
