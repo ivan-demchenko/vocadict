@@ -181,5 +181,5 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-dev', ['copy', 'stylus:dev', 'coffee', 'requirejs:dev', 'clean:dev']);
-  grunt.registerTask('build-prod', ['copy', 'stylus:prod', 'cssmin', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
+  grunt.registerTask('build-prod', ['copy', 'stylus:prod', 'cssmin', 'jade', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
 };
