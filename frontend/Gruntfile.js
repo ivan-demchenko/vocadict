@@ -191,7 +191,14 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build-dev', ['copy', 'stylus:dev', 'coffee', 'requirejs:dev', 'clean:dev']);
+  grunt.registerTask('build-dev', [
+    'copy',
+    'stylus:dev',
+    'jade',
+    'coffee',
+    'requirejs:dev',
+    'clean:dev'
+  ]);
   grunt.registerTask('build-prod', [
     'exec:clone_cssframework',
     'copy',
