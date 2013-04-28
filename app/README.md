@@ -1,1 +1,0 @@
-Vocadict JavaScript App
