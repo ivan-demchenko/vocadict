@@ -1,8 +1,12 @@
-div.track-line(data-type="lastFM")
-    button.search
-      i.icon-search
-    a(href="#")
-      strong <%= artist.name %>
-      span - <%= name %>
+extends proto
 
-div.sub-track
+
+block buttons
+  button.search.flt-l
+    i.icon-search
+
+
+block labels
+  a.disp-ib(href="#")
+    strong <%= artist.name %>
+    span - <%= name %>

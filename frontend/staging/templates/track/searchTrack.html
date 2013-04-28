@@ -1,8 +1,14 @@
 
-<div data-type="search" class="track-line">
-  <button><i class="icon-play"></i></button>
-  <button><i class="icon-heart"></i></button><span><% if (typeof(artist) === 'string') { %><strong><%= artist %></strong><% } %>
-    <% if (typeof(artist) === 'object') { %><strong><%= artist.name %></strong><% } %>
-    <% if (typeof(title) !== 'undefined') { %><span>- <%= title %></span><% } %>
-    <% if (typeof(name) !== 'undefined') { %><span>- <%= name %></span><% } %></span>
+<div class="track-line">
+  <div class="buttons">
+    <button class="play flt-l"><i class="icon-play"></i></button>
+    <button class="like flt-l"><i class="icon-heart"></i></button>
+  </div>
+  <div class="labels"><span class="disp-ib"><% if (typeof(artist) === 'string') { %><strong><%= artist %></strong><% } %>
+      <% if (typeof(artist) === 'object') { %><strong><%= artist.name %></strong><% } %>
+      <% if (typeof(title) !== 'undefined') { %><span>- <%= title %></span><% } %>
+      <% if (typeof(name) !== 'undefined') { %><span>- <%= name %></span><% } %></span></div>
+  <div class="subs">
+  </div>
 </div>
+<div class="sub-track"></div>

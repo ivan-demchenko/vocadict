@@ -113,12 +113,15 @@ define 'app', ['jquery','underscore','backbone', 'soundManager'],
           app.player.currSong = app.player.man.createSound
             id: 'test'
             url: data.url
+
             autoLoad: true
             autoPlay: true
             whileloading: ->
               app.views.player.setLoadData @
             whileplaying: ->
               app.views.player.setPlayingProgress @
+            onfinish: ->
+              app.views.player.playingFinished @
 
           app.player.currSong.play()
           app.views.player.startedPlaying(data)

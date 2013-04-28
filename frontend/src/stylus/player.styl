@@ -50,7 +50,15 @@
       text-align right
 
   #progress
+    cursor w-resize
+    height 7px
     top 18px
+    multiprop(opacity, .6)
+    multiprop(transition, .3s)
+    multiprop(border-radius, 3px)
+    &:hover
+      background #0786Af
+      multiprop(opacity, 1)
 
     #load-progress, #play-progress
       height 1px
@@ -70,7 +78,6 @@
       width 6px
       height 6px
       multiprop(border-radius, 3px)
-      multiprop(transition, .3s)
       cursor pointer
 
       &:hover

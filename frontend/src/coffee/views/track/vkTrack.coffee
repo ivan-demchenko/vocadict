@@ -21,7 +21,7 @@ define 'views/track/vkTrack',
 
       app.trigger 'list.load',
         type: 'lastfm'
-        $domElement: $(e.currentTarget).parent().next()
+        $domElement: $(e.currentTarget).closest('.track-line').next()
         artist: app.methods.decodeStr this.model.get 'artist'
         title: app.methods.decodeStr this.model.get 'title'
         listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
@@ -42,5 +42,14 @@ define 'views/track/vkTrack',
       this.$el.toggleClass 'active'
 
     render: ->
-      itemHTML = _.template this.template, this.model.toJSON()
-      $(this.el).append itemHTML
+      data = @model.toJSON()
+
+      minutes = Math.floor (data.duration / 60) % 60
+      seconds = Math.floor data.duration % 60
+
+      minutes = "0" + minutes if minutes.toString().length is 1
+      seconds = "0" + seconds if seconds.toString().length is 1
+
+      data.durationStr = minutes + ':' + seconds
+      itemHTML = _.template @template, data
+      $(@el).append itemHTML

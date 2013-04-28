@@ -5,8 +5,8 @@ define 'views/track/searchTrack',
     tagName: 'section'
     className: 'item clearfix'
     events:
-      'click .icon-play': 'playTrack'
-      'click .icon-heart': 'likeMe'
+      'click .play': 'playTrack'
+      'click .like': 'likeMe'
 
     initialize:  ->
       this.template = html

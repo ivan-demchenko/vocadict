@@ -1,11 +1,15 @@
-div.track-line(data-type="search")
+extends proto
 
-  button
+
+block buttons
+  button.play.flt-l
     i.icon-play
-  button
+  button.like.flt-l
     i.icon-heart
 
-  span
+
+block labels
+  span.disp-ib
     <% if (typeof(artist) === 'string') { %>
     strong <%= artist %>
     <% } %>

@@ -61,6 +61,9 @@ module.exports = function (grunt) {
           }, {
             src: ['components/soundmanager/swf/soundmanager2.swf'],
             dest: '../app/vendor/soundmanager/soundmanager2.swf'
+          }, {
+            src: ['assets/lastfmsmall.png'],
+            dest: '../app/assets/lastfmsmall.png'
           }
         ]
       }

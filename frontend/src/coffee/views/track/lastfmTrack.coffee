@@ -20,14 +20,14 @@ define 'views/track/lastfmTrack',
 
       app.log 'lastfmTrack clicked: event', e
 
-      this.el = e.currentTarget;
-      this.model.set 'isActive', true
+      @el = e.currentTarget;
+      @model.set 'isActive', true
 
       app.trigger 'list.load',
         type: 'lastfm'
-        artist: app.methods.decodeStr(this.model.get('artist').name)
-        title: app.methods.decodeStr(this.model.get('name'))
-        listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
+        artist: app.methods.decodeStr(@model.get('artist').name)
+        title: app.methods.decodeStr(@model.get('name'))
+        listTitle: 'Similar tracks to "' + @model.getTrackCreds() + '"'
         $domElement: $(e.currentTarget).closest('.track-line').next()
 
     reloadMe: (e) ->
@@ -37,13 +37,13 @@ define 'views/track/lastfmTrack',
       e.preventDefault();
       e.stopPropagation();
 
-      app.log 'lastfmTrack: searchTrack: model: ', this.model
+      app.log 'lastfmTrack: searchTrack: model: ', @model
 
       app.trigger 'track.search',
         type: 'search'
-        artist: app.methods.decodeStr(this.model.get('artist').name)
-        title: app.methods.decodeStr(this.model.get('name'))
+        artist: app.methods.decodeStr(@model.get('artist').name)
+        title: app.methods.decodeStr(@model.get('name'))
 
     render: ->
-      itemHTML = _.template this.template, this.model.toJSON()
-      $(this.el).append itemHTML
+      itemHTML = _.template @template, @model.toJSON()
+      $(@el).append itemHTML

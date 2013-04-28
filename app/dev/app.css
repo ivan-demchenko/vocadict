@@ -1,4 +1,10 @@
 @import "../vendor/cssframework/full.css";
+a {
+  outline: none;
+}
+a:hover {
+  text-decoration: none;
+}
 body {
   font-family: 'Quicksand', Tahoma, Arial, sans-serif;
   background: #f2f2f2;
@@ -111,25 +117,33 @@ button:hover {
   top: 4px;
   right: 4px;
 }
-.tracks-list .item {
+.item {
   border-bottom: solid 1px #ccc;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
 }
-.tracks-list .item.active {
-  background: #dbdbdb;
+.item .track-line .buttons {
+  float: left;
+  margin-right: 5px;
 }
-.tracks-list .item .track-line a {
-  margin-left: 4px;
+.item .track-line .labels {
+  padding: 4px 0;
 }
-.tracks-list .item .track-line a:hover {
-  text-decoration: none;
+.item .track-line .subs {
+  font-size: 11px;
+  margin-left: 5px;
+  float: right;
 }
-.tracks-list .item .track-line span {
-  margin: 4px 0 0 4px;
-}
-.tracks-list .item .track-line:hover {
+.item:hover {
   background: #f0f0f0;
 }
-.tracks-list .item .sub-track {
+.item.active {
+  background: #dbdbdb;
+}
+.item .sub-track {
   padding-left: 30px;
 }
 #player-wrapper {
@@ -190,7 +204,32 @@ button:hover {
   text-align: right;
 }
 #player-wrapper #progress {
+  cursor: w-resize;
+  height: 7px;
   top: 18px;
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  -ms-opacity: 0.6;
+  -o-opacity: 0.6;
+  opacity: 0.6;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+#player-wrapper #progress:hover {
+  background: #0786af;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
 }
 #player-wrapper #progress #load-progress,
 #player-wrapper #progress #play-progress {
@@ -215,11 +254,6 @@ button:hover {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
   cursor: pointer;
 }
 #player-wrapper #progress #tick:hover {

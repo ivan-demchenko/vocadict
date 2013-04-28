@@ -1,8 +1,16 @@
-div.track-line(data-type="vk")
-    button.start-play
-      i.icon-play
-    a(href="#")
-      strong <%= artist %>
-      span - <%= title %>
+extends proto
 
-div.sub-track
+
+block buttons
+  button.start-play.flt-l
+    i.icon-play
+
+
+block labels
+  a.disp-ib(href="#")
+    strong <%= artist %>
+    span - <%= title %>
+
+
+block subs
+  small#duration.flt-r <%= durationStr %>

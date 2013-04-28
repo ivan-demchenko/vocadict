@@ -12175,6 +12175,9 @@ define('app', ['jquery', 'underscore', 'backbone', 'soundManager'], function($, 
             },
             whileplaying: function() {
               return app.views.player.setPlayingProgress(this);
+            },
+            onfinish: function() {
+              return app.views.player.playingFinished(this);
             }
           });
           app.player.currSong.play();
@@ -12430,25 +12433,94 @@ define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 't
     template: _.template(html),
     events: {
       'click .icon-play': 'playSong',
-      'click .icon-pause': 'pauseSong'
+      'click .icon-pause': 'pauseSong',
+      'click #progress': 'setPositionByClick',
+      'mousedown #progress': 'dragTickStart',
+      'mousemove #progress': 'dragTick',
+      'mouseup #progress': 'dragTickStop'
     },
     initialize: function() {
       _.bindAll(this, 'render', 'playSong', 'pauseSong');
       $(this.el).html(this.template);
+      this.searching = false;
       this.wrapper = this.$el.find('#player-wrapper');
       this.titleLabel = this.$el.find('#player-wrapper #label');
       this.timeLabel = this.$el.find('#player-wrapper #time');
+      this.progress = this.$el.find('#progress');
       this.loadingProgress = this.$el.find('#player-wrapper #load-progress');
       this.playingProgress = this.$el.find('#player-wrapper #play-progress');
       return this.tick = this.$el.find('#player-wrapper #tick');
     },
+    dragTickStart: function(e) {
+      if (app.player.currSong !== null) {
+        this.searching = true;
+      }
+      if (e.buttons === 0) {
+        return;
+      }
+      if (e.buttons === 1) {
+        this.progress._startX = e.clientX;
+        this.tick._startX = this.tick.position().left;
+      }
+      document.onselectstart = function() {
+        return false;
+      };
+      return e.currentTarget.ondragstart = function() {
+        return false;
+      };
+    },
+    dragTick: function(e) {
+      var _mouseOffset, _x;
+
+      if (this.searching) {
+        if (e.buttons === 0) {
+          return;
+        }
+        _mouseOffset = e.clientX - this.progress._startX;
+        _x = this.tick._startX + _mouseOffset;
+        if (_x >= 0 && _x < $("#progress").width()) {
+          return this.tick.css('left', _x);
+        }
+      }
+    },
+    dragTickStop: function(e) {
+      var pos;
+
+      this.searching = false;
+      pos = Math.floor((((this.tick.position().left * 100) / $("#progress").width()) * this.duration) / 100);
+      if (pos < 10) {
+        pos = 0;
+      }
+      return app.player.currSong.setPosition(pos);
+    },
+    setPositionByClick: function(e) {
+      var calcRealLeftOffset, ofst, pos, rofst;
+
+      calcRealLeftOffset = function(elem, v) {
+        v += elem.offsetLeft;
+        if (elem.offsetParent !== null) {
+          return calcRealLeftOffset(elem.offsetParent, v);
+        } else {
+          return v;
+        }
+      };
+      rofst = calcRealLeftOffset(e.currentTarget, 0);
+      ofst = e.clientX - rofst;
+      this.tick.css('left', ofst);
+      pos = ofst * this.duration / $("#progress").width();
+      return app.player.currSong.setPosition(pos);
+    },
     playSong: function() {
-      this.wrapper.addClass('playing');
-      return app.player.currSong.play();
+      if (app.player.currSong !== null) {
+        this.wrapper.addClass('playing');
+        return app.player.currSong.play();
+      }
     },
     pauseSong: function() {
-      this.wrapper.removeClass('playing');
-      return app.player.currSong.pause();
+      if (app.player.currSong !== null) {
+        this.wrapper.removeClass('playing');
+        return app.player.currSong.pause();
+      }
     },
     startedPlaying: function(data) {
       this.titleLabel.text(data.title);
@@ -12460,15 +12532,29 @@ define('views/player/playerView', ['app', 'jquery', 'underscore', 'backbone', 't
       seconds = Math.floor((data.durationEstimate / 1000) % 60);
       minutes = Math.floor((data.durationEstimate / (60 * 1000)) % 60);
       loadProgress = Math.floor((data.bytesLoaded * 100) / data.bytesTotal);
+      if (minutes.toString().length === 1) {
+        minutes = '0' + minutes;
+      }
+      if (seconds.toString().length === 1) {
+        seconds = '0' + seconds;
+      }
       this.timeLabel.text(minutes + ':' + seconds);
       return this.loadingProgress.css('width', loadProgress + '%');
     },
     setPlayingProgress: function(data) {
       var playProgress;
 
-      playProgress = Math.floor(data.position / data.duration * 100);
-      this.playingProgress.css('width', playProgress + '%');
-      return this.tick.css('left', playProgress + '%');
+      this.duration = data.duration;
+      playProgress = Math.floor(data.position * $("#progress").width() / data.duration);
+      this.playingProgress.css('width', playProgress + 'px');
+      if (this.searching !== true) {
+        return this.tick.css('left', playProgress + 'px');
+      }
+    },
+    playingFinished: function(data) {
+      this.playingProgress.css('width', 0);
+      this.tick.css('left', 0);
+      return this.wrapper.removeClass('playing');
     }
   });
 });
@@ -12568,8 +12654,8 @@ define('views/track/searchTrack', ['jquery', 'underscore', 'backbone', 'app', 't
     tagName: 'section',
     className: 'item clearfix',
     events: {
-      'click .icon-play': 'playTrack',
-      'click .icon-heart': 'likeMe'
+      'click .play': 'playTrack',
+      'click .like': 'likeMe'
     },
     initialize: function() {
       this.template = html;
@@ -12639,7 +12725,7 @@ define('views/track/vkTrack', ['jquery', 'underscore', 'backbone', 'app', 'text!
       app.log('vkTrack clicked: event', e);
       return app.trigger('list.load', {
         type: 'lastfm',
-        $domElement: $(e.currentTarget).parent().next(),
+        $domElement: $(e.currentTarget).closest('.track-line').next(),
         artist: app.methods.decodeStr(this.model.get('artist')),
         title: app.methods.decodeStr(this.model.get('title')),
         listTitle: 'Similar tracks to "' + this.model.getTrackCreds() + '"'
@@ -12661,9 +12747,19 @@ define('views/track/vkTrack', ['jquery', 'underscore', 'backbone', 'app', 'text!
       return this.$el.toggleClass('active');
     },
     render: function() {
-      var itemHTML;
+      var data, itemHTML, minutes, seconds;
 
-      itemHTML = _.template(this.template, this.model.toJSON());
+      data = this.model.toJSON();
+      minutes = Math.floor((data.duration / 60) % 60);
+      seconds = Math.floor(data.duration % 60);
+      if (minutes.toString().length === 1) {
+        minutes = "0" + minutes;
+      }
+      if (seconds.toString().length === 1) {
+        seconds = "0" + seconds;
+      }
+      data.durationStr = minutes + ':' + seconds;
+      itemHTML = _.template(this.template, data);
       return $(this.el).append(itemHTML);
     }
   });
@@ -12780,11 +12876,11 @@ define('views/tracksList/searchTracksList', ['jquery', 'underscore', 'backbone',
   });
 });
 
-define('text!templates/track/lastfmTrack.html',[],function () { return '\n<div data-type="lastFM" class="track-line">\n  <button class="search"><i class="icon-search"></i></button><a href="#"><strong><%= artist.name %></strong><span>- <%= name %></span></a>\n</div>\n<div class="sub-track"></div>';});
+define('text!templates/track/lastfmTrack.html',[],function () { return '\n<div class="track-line">\n  <div class="buttons">\n    <button class="search flt-l"><i class="icon-search"></i></button>\n  </div>\n  <div class="labels"><a href="#" class="disp-ib"><strong><%= artist.name %></strong><span>- <%= name %></span></a></div>\n  <div class="subs">\n  </div>\n</div>\n<div class="sub-track"></div>';});
 
-define('text!templates/track/searchTrack.html',[],function () { return '\n<div data-type="search" class="track-line">\n  <button><i class="icon-play"></i></button>\n  <button><i class="icon-heart"></i></button><span><% if (typeof(artist) === \'string\') { %><strong><%= artist %></strong><% } %>\n    <% if (typeof(artist) === \'object\') { %><strong><%= artist.name %></strong><% } %>\n    <% if (typeof(title) !== \'undefined\') { %><span>- <%= title %></span><% } %>\n    <% if (typeof(name) !== \'undefined\') { %><span>- <%= name %></span><% } %></span>\n</div>';});
+define('text!templates/track/searchTrack.html',[],function () { return '\n<div class="track-line">\n  <div class="buttons">\n    <button class="play flt-l"><i class="icon-play"></i></button>\n    <button class="like flt-l"><i class="icon-heart"></i></button>\n  </div>\n  <div class="labels"><span class="disp-ib"><% if (typeof(artist) === \'string\') { %><strong><%= artist %></strong><% } %>\n      <% if (typeof(artist) === \'object\') { %><strong><%= artist.name %></strong><% } %>\n      <% if (typeof(title) !== \'undefined\') { %><span>- <%= title %></span><% } %>\n      <% if (typeof(name) !== \'undefined\') { %><span>- <%= name %></span><% } %></span></div>\n  <div class="subs">\n  </div>\n</div>\n<div class="sub-track"></div>';});
 
-define('text!templates/track/vkTrack.html',[],function () { return '\n<div data-type="vk" class="track-line">\n  <button class="start-play"><i class="icon-play"></i></button><a href="#"><strong><%= artist %></strong><span>- <%= title %></span></a>\n</div>\n<div class="sub-track"></div>';});
+define('text!templates/track/vkTrack.html',[],function () { return '\n<div class="track-line">\n  <div class="buttons">\n    <button class="start-play flt-l"><i class="icon-play"></i></button>\n  </div>\n  <div class="labels"><a href="#" class="disp-ib"><strong><%= artist %></strong><span>- <%= title %></span></a></div>\n  <div class="subs"><small id="duration" class="flt-r"><%= durationStr %></small></div>\n</div>\n<div class="sub-track"></div>';});
 
 define('text!templates/tracksList/lastfmTracksList.html',[],function () { return '\n<header><span><%= listTitle %></span><i class="icon-remove"></i></header>\n<div></div>';});
 
