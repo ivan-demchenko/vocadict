@@ -87,7 +87,7 @@ module.exports = function (grunt) {
 
     exec: {
       clone_cssframework: {
-        command: 'cd components/ && git clone https://github.com/raqystyle/cssframework.git'
+        command: 'if [ ! -d "components/cssframework" ]; then cd components/ && git clone https://github.com/raqystyle/cssframework.git fi'
       }
     },
 
