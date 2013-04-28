@@ -9,6 +9,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-exec');
   // Project configuration.
   grunt.initConfig({
 
@@ -81,6 +82,12 @@ module.exports = function (grunt) {
       scripts: {
         files: ['src/coffee/**/*.coffee'],
         tasks: ['coffee', 'requirejs:dev']
+      }
+    },
+
+    exec: {
+      clone_cssframework: {
+        command: 'cd components/ && git clone https://github.com/raqystyle/cssframework.git'
       }
     },
 
@@ -181,5 +188,5 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-dev', ['copy', 'stylus:dev', 'coffee', 'requirejs:dev', 'clean:dev']);
-  grunt.registerTask('build-prod', ['copy', 'stylus:prod', 'cssmin', 'jade', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
+  grunt.registerTask('build-prod', ['exec:clone_cssframework', 'copy', 'stylus:prod', 'cssmin', 'jade', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
 };
