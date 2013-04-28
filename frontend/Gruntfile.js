@@ -55,7 +55,7 @@ module.exports = function (grunt) {
             dest: '../app/vendor/cssframework/vendor/Font-Awesome/css/font-awesome.css'
           }, {
             expand: true,
-            cwd: 'components/cssframework/css/vendor/Font-Awesome/font/',
+            cwd: 'components/font-awesome/font/',
             src: ['*'],
             dest: '../app/vendor/fonts/',
             filter: 'isFile'
@@ -88,6 +88,10 @@ module.exports = function (grunt) {
     exec: {
       clone_cssframework: {
         command: 'if [ ! -d "components/cssframework" ]; then cd components/ && git clone https://github.com/raqystyle/cssframework.git; fi'
+      },
+      turn_off_debug: {
+        command: 'sed -i "s/debug\: true\,/debug\: false\,/" staging/app.js',
+        stdout: false
       }
     },
 
@@ -188,5 +192,16 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-dev', ['copy', 'stylus:dev', 'coffee', 'requirejs:dev', 'clean:dev']);
-  grunt.registerTask('build-prod', ['exec:clone_cssframework', 'copy', 'stylus:prod', 'cssmin', 'jade', 'coffee', 'requirejs:prod', 'uglify', 'clean:prod']);
+  grunt.registerTask('build-prod', [
+    'exec:clone_cssframework',
+    'copy',
+    'stylus:prod',
+    'cssmin',
+    'jade',
+    'coffee',
+    'exec:turn_off_debug',
+    'requirejs:prod',
+    'uglify',
+    'clean:prod'
+  ]);
 };
