@@ -149,7 +149,12 @@ module.exports = function (grunt) {
           },
           {
             dest: 'staging/app.js',
-            src: ['src/coffee/**/*.coffee', '!src/coffee/config.coffee']
+            src: [
+              'src/coffee/appLogic.coffee',
+              'src/coffee/app.coffee',
+              'src/coffee/**/*.coffee',
+              '!src/coffee/config.coffee'
+            ]
           }
         ]
       }

@@ -6,6 +6,5 @@ define 'views/tracksList/prototype',
     className: 'tracks-list'
 
     initialize: (params) ->
-      this.$el.attr 'id', this.cid
-      this.$el.html this.template listTitle: params.data.listTitle
-      return @;
+
+      @

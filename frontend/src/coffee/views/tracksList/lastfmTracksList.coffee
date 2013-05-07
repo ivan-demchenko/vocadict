@@ -1,15 +1,18 @@
-define 'views/tracksList/lastfmTracksList',
-['jquery','underscore','backbone','app',
-  'views/tracksList/prototype',
+define 'views/tracksList/lastfmTracksList', [
+  'jquery','underscore','backbone','app',
   'views/track/lastfmTrack',
   'text!templates/tracksList/lastfmTracksList.html'
 ],
-($, _, Backbone, app, tracksListViewPrototype, TrackView, html) ->
-  tracksListViewPrototype.extend
+($, _, Backbone, app, TrackView, html) ->
+  Backbone.View.extend
+
     template: _.template html
-    initialize: ->
+    className: 'tracks-list'
+
+    initialize: (params) ->
       app.log 'lastfmTrackList: init'
-      tracksListViewPrototype.prototype.initialize.apply this, arguments
+      @$el.html @template listTitle: params.data.listTitle
+      @render()
 
     events:
       'click .icon-remove': 'closeMe'
@@ -17,22 +20,20 @@ define 'views/tracksList/lastfmTracksList',
     render: ->
       app.log 'myTracksList: render: this', this
 
-      docFrag = document.createDocumentFragment();
-
-      this.collection.each (TrackModel) ->
+      docFrag = document.createDocumentFragment()
+      @collection.each (TrackModel) ->
         if TrackModel.get('artist') isnt 'Unknown'
           view = new TrackView model: TrackModel
-          view.render();
+          view.render()
           docFrag.appendChild view.el
-
-      this.$el.find('div')[0].appendChild docFrag
-
-      return @
+      @$el.find('div')[0].appendChild docFrag
+      @$el.attr 'id', @cid
+      @
 
     closeMe: (e) ->
       e.preventDefault()
       e.stopPropagation()
 
-      cid = this.$el.attr 'id'
-      this.$el.closest('.active').removeClass 'active'
+      cid = @$el.attr 'id'
+      @$el.closest('.active').removeClass 'active'
       app.trigger 'list.kill', cid
