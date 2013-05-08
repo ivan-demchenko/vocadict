@@ -187,6 +187,7 @@ define 'appLogic', ['jquery','underscore','backbone', 'soundManager'],
           when "lastfm", "search" then appLogic.methods.loadSimilarTracksList params
           else alert 'No spec'
         @
+
       # Event: list.loaded
       # When List is loaded and data recieved.
       # This function will decide which type of list to load and display by
@@ -204,6 +205,6 @@ define 'appLogic', ['jquery','underscore','backbone', 'soundManager'],
         appLogic.log "appLogic: killList: cid: ", cid
         list = appLogic.views[cid]
         list.$el.undelegate()
-        list.$el.remove()
+        list.$el.html('')
         delete appLogic.views[cid]
         @

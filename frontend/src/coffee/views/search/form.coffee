@@ -24,12 +24,12 @@ define 'views/search/form',
     makeSearch: (e) ->
       e.preventDefault();
 
-      artist = this.$el.find('#search-artist').val()
-      title = this.$el.find('#search-title').val()
+      artist = @$el.find('#search-artist').val()
+      title = @$el.find('#search-title').val()
 
       app.trigger 'list.load',
         type: 'search'
         artist: app.methods.decodeStr artist
-        title: app.methods.decodeStrtitle
+        title: app.methods.decodeStr title
         $domElement: $ "#search-mp3-list"
         listTitle: 'Search similar tracks for "' + artist + ' - ' + title + '"'

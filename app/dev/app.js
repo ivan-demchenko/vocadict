@@ -12063,7 +12063,6 @@ define('appLogic', ['jquery', 'underscore', 'backbone', 'soundManager'], functio
       }
     },
     start: function() {
-      console.log('appLogic: start');
       if (this.vk.user_id === null || this.vk.access_token === null) {
         this.authVK();
       } else {
@@ -12072,7 +12071,6 @@ define('appLogic', ['jquery', 'underscore', 'backbone', 'soundManager'], functio
       return this;
     },
     init: function() {
-      console.log('appLogic: init');
       require(['views/layout'], function(Layout) {
         appLogic.views.layout = new Layout({
           el: document.getElementById('app')
@@ -12101,7 +12099,6 @@ define('appLogic', ['jquery', 'underscore', 'backbone', 'soundManager'], functio
       return this;
     },
     authVK: function() {
-      console.log('appLogic: authVK');
       appLogic.navigate('landing', {
         trigger: true
       });
@@ -12302,7 +12299,7 @@ define('appLogic', ['jquery', 'underscore', 'backbone', 'soundManager'], functio
         appLogic.log("appLogic: killList: cid: ", cid);
         list = appLogic.views[cid];
         list.$el.undelegate();
-        list.$el.remove();
+        list.$el.html('');
         delete appLogic.views[cid];
         return this;
       }
@@ -12641,7 +12638,7 @@ define('views/search/form', ['app', 'jquery', 'underscore', 'backbone', 'text!te
       return app.trigger('list.load', {
         type: 'search',
         artist: app.methods.decodeStr(artist),
-        title: app.methods.decodeStrtitle,
+        title: app.methods.decodeStr(title),
         $domElement: $("#search-mp3-list"),
         listTitle: 'Search similar tracks for "' + artist + ' - ' + title + '"'
       });
